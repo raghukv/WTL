@@ -20,10 +20,9 @@ class GameUtils {
     
     
     
-    func createDrop(size: CGFloat) -> SKSpriteNode{
-        
-//        var min = size/38008
-//        var max = size/16928
+    
+    
+    func createDrop() -> SKSpriteNode{
         var min = 8
         var max = 18
         var rand = UInt32(max - min)
@@ -33,14 +32,14 @@ class GameUtils {
         drop.color = UIColor.clearColor()
         drop.size = CGSizeMake(radius * 2, radius * 2)
         var dropBody = SKPhysicsBody(circleOfRadius: radius)
-        dropBody.dynamic = true
-        dropBody.usesPreciseCollisionDetection = true
+//        dropBody.dynamic = true
+//        dropBody.usesPreciseCollisionDetection = true
         drop.physicsBody = dropBody
         var dropPath = CGPathCreateWithEllipseInRect(CGRectMake((-drop.size.width/2), -drop.size.height/2, drop.size.width, drop.size.width),
             nil)
         var dropShape = SKShapeNode()
         dropShape.fillColor = darkColor
-        dropShape.lineWidth = 1
+        dropShape.lineWidth = 0
         drop.name = "dropMask"
         dropShape.path = dropPath
         drop.addChild(dropShape)
@@ -80,7 +79,7 @@ class GameUtils {
         drop.size = CGSizeMake(radius * 2, radius * 2)
         var dropBody = SKPhysicsBody(circleOfRadius: radius)
         dropBody.dynamic = true
-        dropBody.usesPreciseCollisionDetection = true
+        dropBody.usesPreciseCollisionDetection = false
         drop.physicsBody = dropBody
         var dropPath = CGPathCreateWithEllipseInRect(CGRectMake((-drop.size.width/2), -drop.size.height/2, drop.size.width, drop.size.width),
             nil)
@@ -215,7 +214,6 @@ class GameUtils {
         bezierPath.addLineToPoint(CGPointMake(168.5, 82.5))
         bezierPath.addLineToPoint(CGPointMake(168.5, 39.5))
         bezierPath.closePath()
-//        UIColor.blackColor().setStroke()
         bezierPath.lineWidth = 1
         bezierPath.stroke()
         return bezierPath
@@ -224,8 +222,7 @@ class GameUtils {
     func drawControlObject() -> SKSpriteNode{
         var controlObject = SKSpriteNode(imageNamed: "Main.png")
         
-        var body = SKPhysicsBody(texture: controlObject.texture, size: controlObject.texture!.size())
-        
+        var body = SKPhysicsBody(texture: controlObject.texture, alphaThreshold: 0.1, size: controlObject.texture!.size())
         
         body.dynamic = false
         
@@ -255,7 +252,7 @@ class GameUtils {
         mainCircle.size = CGSizeMake(radius * 2, radius * 2);
         var circleBody = SKPhysicsBody(circleOfRadius: radius)
         circleBody.dynamic = true
-        circleBody.usesPreciseCollisionDetection = true
+        circleBody.usesPreciseCollisionDetection = false
         mainCircle.physicsBody = circleBody
         var bodyPath : CGPathRef = CGPathCreateWithEllipseInRect(CGRectMake((-mainCircle.size.width/2), -mainCircle.size.height/2, mainCircle.size.width, mainCircle.size.width),nil)
         var circleShape = SKShapeNode()

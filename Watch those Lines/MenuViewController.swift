@@ -24,10 +24,11 @@ class MenuViewController : UIViewController {
     
     var firstTime: Bool = true
     
+    var previousHighest = 0
+    
     override func viewDidLoad() {
         loadHighScore()
-        
-           }
+    }
     
     override func viewDidAppear(animated: Bool) {
 
@@ -39,6 +40,11 @@ class MenuViewController : UIViewController {
                     (finished: Bool) -> Void in
             })
             moveImage(self.titleImage)
+        }else{
+            loadHighScore()
+//            if(loadHighScore() > self.previousHighest){
+            
+//            }
         }
         firstTime = false
     }
@@ -62,7 +68,7 @@ class MenuViewController : UIViewController {
     }
 
 
-    func loadHighScore(){
+    func loadHighScore() -> Int{
         scores = scoreManager.scores
         if(scores.count != 0){
             for scoreObject in self.scores{
@@ -70,8 +76,10 @@ class MenuViewController : UIViewController {
                     highScore = scoreObject.score
                 }
             }
-            scoreLabel.text = "best score " + String(format:"%d", self.highScore)
+            self.scoreLabel.text = "best score " + String(format:"%d", self.highScore)
+            self.previousHighest = self.highScore
+            
         }
-
+        return highScore
     }
 }

@@ -62,11 +62,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var score = 0
     
     var menuButton = SKSpriteNode()
+    
+    var tryAgainLabel = SKSpriteNode()
 
     override func didMoveToView(view: SKView) {
+
         
         self.physicsWorld.contactDelegate = self
-        self.physicsWorld.gravity = CGVectorMake(0, 0)
+        self.physicsWorld.gravity = CGVectorMake(0, 0.0)
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         
         showInstructions()
@@ -161,20 +164,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setUpControlObject() -> Void {
+
         self.controlCircle = gameUtils.drawControlObject()
-        
         controlCircle.position = CGPointMake(CGRectGetMidX(self.scene!.frame), CGRectGetMidY(self.scene!.frame
             ))
         self.addChild(controlCircle)
         
         gameUtils.fadeIn(controlCircle, duration: 0.7)
+        controlCircle.physicsBody?.friction = 0.0
+        controlCircle.physicsBody?.allowsRotation = false
 //        controlCircle.physicsBody?.usesPreciseCollisionDetection = true
         controlCircle.physicsBody?.dynamic = true
+        controlCircle.physicsBody?.affectedByGravity = false
         controlCircle.physicsBody?.categoryBitMask = mainCategory
         controlCircle.physicsBody?.contactTestBitMask = dropCategory | waterCategory
         controlCircle.physicsBody?.collisionBitMask = dropCategory | waterCategory
         
         controlCircle.name = "controlObj"
+//        var rotate = SKAction.rotateByAngle(90, duration: 20)
+//        var rotateAction = SKAction.repeatActionForever(rotate)
+//        controlCircle.runAction(rotateAction)
     }
     
     func showInstructions() -> Void {
@@ -285,8 +294,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             yValue = CGFloat(gameUtils.randRange(maxY, upper: minY))
         }
         
-        var size = self.frame.height * self.frame.width
-        var drop = gameUtils.createDrop(size)
+        var drop = gameUtils.createDrop()
         drop.alpha = 0.0
         
         var fromX : CGFloat = 0.0
@@ -302,6 +310,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         drop.position = CGPointMake(fromX, yValue)
         self.addChild(drop)
+        drop.physicsBody?.affectedByGravity = false
         drop.physicsBody?.categoryBitMask = dropCategory
         drop.physicsBody?.contactTestBitMask = mainCategory | waterCategory
         drop.physicsBody?.collisionBitMask = mainCategory | waterCategory
@@ -340,16 +349,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func randomRainDrops() -> Void{
         
-        var min = self.frame.origin.x + 20
+        var min = self.frame.origin.x + 30
         var max = self.frame.width - 20
         var xValue = Int(arc4random_uniform(UInt32(max - min + 1)))
-        
-        var size = self.frame.height * self.frame.width
-        var drop = gameUtils.createDrop(size)
-        
-        drop.position = CGPointMake(CGFloat(xValue) - 4, self.frame.height)
-        
-        self.addChild(drop)
+        var drop = gameUtils.createDrop()
+
+        drop.position = CGPointMake(CGFloat(xValue), self.frame.height)
+        self.addChild(drop) 
         
         drop.physicsBody?.categoryBitMask = dropCategory
         drop.physicsBody?.contactTestBitMask = mainCategory | waterCategory
@@ -405,14 +411,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var secondBody : SKNode = contact.bodyB.node!
         
         if(endGameCondition(firstBody, secondBody: secondBody))
-            
         {
+            gameEnded = true
             firstBody.removeAllActions()
             secondBody.removeAllActions()
-            endTheGame()
+            self.removeActionForKey("gameLoop")
+            self.removeActionForKey("moveWaterUp")
+            self.flashWithDuration(0.1, node: firstBody)
+            self.flashWithDuration(0.1, node: secondBody)
+            var wait = SKAction.waitForDuration(0.5)
+            self.runAction(wait, completion: {Void in
+                    self.endTheGame()
+            })
+        
         }
         
-        if (collectibleCondition(firstBody, secondBody: secondBody))
+        else if (collectibleCondition(firstBody, secondBody: secondBody))
         {
             if(firstBody.physicsBody?.categoryBitMask == collectibleCategory){
                 firstBody.removeFromParent()
@@ -427,7 +441,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             water.runAction(moveWaterDown, withKey: "moveDown")
             moveWaterUp()
         }
-        if(sinkCondition(firstBody, secondBody: secondBody)){
+        else if(sinkCondition(firstBody, secondBody: secondBody)){
             
             if(firstBody.physicsBody?.categoryBitMask == dropCategory){
                 firstBody.removeFromParent()
@@ -435,6 +449,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 secondBody.removeFromParent()
             }
         }
+    }
+    
+    func flashWithDuration(duration: NSTimeInterval, node: SKNode){
+        var fadeOut = SKAction.fadeOutWithDuration(duration)
+        var fadeIn = SKAction.fadeInWithDuration(duration)
+        node.runAction(SKAction.sequence([fadeOut, fadeIn, fadeOut, fadeIn]))
     }
     
     func endTheGame(){
@@ -459,12 +479,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.scoreLabel.runAction(SKAction.fadeAlphaTo(1, duration: 1.0))
         self.scoreLabel.runAction(SKAction.moveToY(CGRectGetMidY(self.frame)-100, duration: 1.0))
-        
-        var tryAgain = gameUtils.drawTryAgain()
-        tryAgain.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)-200)
-        self.addChild(tryAgain)
+
+        tryAgainLabel = gameUtils.drawTryAgain()
+        tryAgainLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)-200)
+        self.addChild(tryAgainLabel)
         var fadeInLabel = SKAction.fadeInWithDuration(1.0)
-        tryAgain.runAction(fadeInLabel, completion: { () -> Void in
+        tryAgainLabel.runAction(fadeInLabel, completion: { () -> Void in
                   self.disableTryAgain = false;
         })
         self.menuButton = gameUtils.drawMenuButton()
@@ -475,8 +495,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreManager.addNewScore(self.score)
         scoreManager.save()
     }
-    
-    
+
     func fadeAndKillNode(drop: SKNode) -> Void {
          gameUtils.fadeOutAndKill(drop)
     }
@@ -500,8 +519,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var checkPos = CGPointMake(newX - controlCircle.frame.width/2, newY)
         var checkPosTwo = CGPointMake(newX + controlCircle.frame.width/2, newY)
         
-//        if(self.frame.contains(checkPos) && self.frame.contains(checkPosTwo)){
-        if(self.frame.contains(newPos)){
+
+//        var dX = newPos.x - controlCircle.position.x
+//        var dY = newPos.y - controlCircle.position.y
+//        var angle = (atan2(dY, dX))
+//        controlCircle.zRotation = angle;
+        if(self.frame.contains(checkPos) && self.frame.contains(checkPosTwo)){
+//        if(self.frame.contains(newPos)){
             
             controlCircle.position = newPos
         }else{
@@ -567,6 +591,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if (self.lastSpawnTimeInterval > 1) {
             
+            if(gameEnded){
+                
+            }
+            
             if(!instructionsDone || !gameBegan){
                 return
             }
@@ -581,9 +609,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 waterLevelDangerous = false;
             }
             
-            if(!gameEnded){
-                gameUtils.straightenControl(self.controlCircle)
-            }
+            
+//                gameUtils.straightenControl(self.controlCircle)
+            
             if(self.score > 1 && self.score <= 140 && self.score % 7 == 0){
                 // every 5 seconds for 20 times
                 self.dropGenerationInterval -= 0.030
