@@ -53,7 +53,7 @@ class MenuScene : SKScene {
         
         self.title.position = self.center
         self.addChild(title)
-        var wait = SKAction.waitForDuration(1)
+        var wait = SKAction.waitForDuration(0.5)
         var moveUp = SKAction.moveToY(center.y + 150, duration: 0.5)
         title.runAction(wait, completion: { () -> Void in
             self.title.runAction(moveUp, completion: { () -> Void in

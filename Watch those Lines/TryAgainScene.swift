@@ -10,5 +10,8 @@ import Foundation
 import SpriteKit
 
 class TryAgainScene : SKScene {
+    var tryAgainLabel : SKLabelNode = SKLabelNode()
+    var menuLabel : SKLabelNode = SKLabelNode()
+    var utils : GameUtils = GameUtils()
     
 }
