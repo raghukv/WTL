@@ -231,6 +231,18 @@ class GameUtils {
         return controlObject
     }
     
+    func drawHexControlObject() -> SKSpriteNode{
+        var controlObject = SKSpriteNode(imageNamed: "polygon.png")
+        
+        var body = SKPhysicsBody(texture: controlObject.texture, alphaThreshold: 0.1, size: controlObject.texture!.size())
+        
+        body.dynamic = false
+        
+        controlObject.physicsBody = body
+        
+        return controlObject
+    }
+    
     func createDiamond() -> SKSpriteNode{
         
         var diamond = SKSpriteNode(imageNamed: "Diamond.png")

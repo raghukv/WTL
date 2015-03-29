@@ -22,6 +22,8 @@ class MenuScene : SKScene {
     var previousHighest : Int = 0
     var highScore : Int = 0
     
+    var reverse : SKLabelNode = SKLabelNode()
+    
     
     
     override func didMoveToView(view: SKView) {
@@ -61,6 +63,15 @@ class MenuScene : SKScene {
     }
     
     func initializeMenuButtons() -> Void {
+        
+        self.reverse.alpha = 0.0
+        reverse = GameUtils.getLabelNodeWithText("play (reverse with hex)", name: "playUp")
+        reverse.name = "playUp"
+        reverse.fontSize = 30
+        self.addChild(reverse)
+        reverse.position = CGPointMake(center.x, center.y - 80)
+        reverse.runAction(fadeIn)
+        
         self.scoreLabel.alpha = 0.0
         playButton = GameUtils.getLabelNodeWithText("play", name: "playButton");
         playButton.name = "playButton"
@@ -82,6 +93,14 @@ class MenuScene : SKScene {
             var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
             var skView = self.view as SKView!
             var scene = GameScene()
+            scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+            scene.size = skView.bounds.size
+            scene.scaleMode = SKSceneScaleMode.AspectFill
+            self.scene!.view!.presentScene(scene, transition: trans)
+        }else if (node.name == "playUp"){
+            var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
+            var skView = self.view as SKView!
+            var scene = GameSceneReverse()
             scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
             scene.size = skView.bounds.size
             scene.scaleMode = SKSceneScaleMode.AspectFill

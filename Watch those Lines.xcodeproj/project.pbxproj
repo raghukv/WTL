@@ -21,6 +21,7 @@
 		5DE77F8E1AC7D665002F24BA /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F8A1AC7D665002F24BA /* MenuScene.sks */; };
 		5DE77F8F1AC7D665002F24BA /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE77F8B1AC7D665002F24BA /* MenuScene.swift */; };
 		5DE77F901AC7D665002F24BA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */; };
+		5DE77F921AC7D70A002F24BA /* GameSceneReverse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE77F911AC7D70A002F24BA /* GameSceneReverse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		5DE77F8A1AC7D665002F24BA /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = MenuScene.sks; path = "Watch those Lines/MenuScene.sks"; sourceTree = "<group>"; };
 		5DE77F8B1AC7D665002F24BA /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuScene.swift; path = "Watch those Lines/MenuScene.swift"; sourceTree = "<group>"; };
 		5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "Watch those Lines/Launch Screen.xib"; sourceTree = "<group>"; };
+		5DE77F911AC7D70A002F24BA /* GameSceneReverse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameSceneReverse.swift; path = "Watch those Lines/GameSceneReverse.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				5DE77F8A1AC7D665002F24BA /* MenuScene.sks */,
 				5DE77F8B1AC7D665002F24BA /* MenuScene.swift */,
 				5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */,
+				5DE77F911AC7D70A002F24BA /* GameSceneReverse.swift */,
 				5DE6CACF1AC10F39006FD79E /* GameScene.swift */,
 				5DE6CAD01AC10F39006FD79E /* GameUtils.swift */,
 				5DE77F801AC7BF83002F24BA /* View Controllers */,
@@ -182,6 +185,7 @@
 				5DE6CAE31AC10F39006FD79E /* GameScene.swift in Sources */,
 				5DE6CAE41AC10F39006FD79E /* GameUtils.swift in Sources */,
 				5DE6CAEB1AC10F39006FD79E /* ScoreManager.swift in Sources */,
+				5DE77F921AC7D70A002F24BA /* GameSceneReverse.swift in Sources */,
 				5DE6CADF1AC10F39006FD79E /* BestScore.swift in Sources */,
 				5DE6CAEA1AC10F39006FD79E /* MenuViewController.swift in Sources */,
 				5DE77F8F1AC7D665002F24BA /* MenuScene.swift in Sources */,

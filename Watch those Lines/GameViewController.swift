@@ -45,6 +45,9 @@ class GameViewController: UIViewController {
 //            skView.showsNodeCount = true
 //            skView.showsPhysics = true
             
+            
+//            var transition = SKTransition.fadeWithColor(UIColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1), duration: 1)
+//            var transition = SKTransition.doorsCloseHorizontalWithDuration(1)
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true
             
