@@ -140,11 +140,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func initiateRain() -> Void {
+        var wait : SKAction!
         if(!instructionsDone){
             instructionsDone = true
             showAvoidInstruction()
+            wait = SKAction.waitForDuration(4)
+        }else{
+            wait = SKAction.waitForDuration(2)
         }
-        var wait = SKAction.waitForDuration(2)
+//        var wait = SKAction.waitForDuration(4)
         var start = SKAction.runBlock({
             self.mainLoop(self.dropGenerationInterval)
             self.gameBegan = true
@@ -162,9 +166,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var fadeIn = SKAction.fadeInWithDuration(0.5)
         var wait = SKAction.waitForDuration(2)
         var fadeOut = SKAction.runBlock({
-            self.gameUtils.fadeOutAndKill(avoid)
+            self.gameUtils.fadeOutAndKillWithDuration(avoid, duration: 0.2)
         })
-        avoid.runAction(SKAction.sequence([fadeIn, wait, fadeOut]))
+        
+        var collectThese = SKSpriteNode(imageNamed: "collectThese")
+        collectThese.name = "collect"
+        collectThese.position = CGPointMake(CGRectGetMidX(self.scene!.frame), CGRectGetMidY(self.scene!.frame) + 150)
+        collectThese.alpha = 0.0
+        self.addChild(collectThese)
+        var fadeOutCollect = SKAction.runBlock({
+            self.gameUtils.fadeOutAndKillWithDuration(collectThese, duration: 0.2)
+        })
+        
+        
+        avoid.runAction(SKAction.sequence([fadeIn, wait, fadeOut]), completion: { () -> Void in
+            collectThese.runAction(SKAction.sequence([fadeIn, wait, fadeOutCollect]))
+        })
     }
     
     func setUpControlObject() -> Void {
