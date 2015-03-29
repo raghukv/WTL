@@ -17,10 +17,10 @@
 		5DE6CAE81AC10F39006FD79E /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD41AC10F39006FD79E /* Info.plist */; };
 		5DE6CAEA1AC10F39006FD79E /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD61AC10F39006FD79E /* MenuViewController.swift */; };
 		5DE6CAEB1AC10F39006FD79E /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD71AC10F39006FD79E /* ScoreManager.swift */; };
-		5DE77F7A1AC79BBB002F24BA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F791AC79BBB002F24BA /* Launch Screen.xib */; };
-		5DE77F821AC7D3CD002F24BA /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE77F811AC7D3CD002F24BA /* MenuScene.swift */; };
-		5DE77F841AC7D3FE002F24BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F831AC7D3FE002F24BA /* Main.storyboard */; };
-		5DE77F881AC7D42C002F24BA /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F871AC7D42C002F24BA /* MenuScene.sks */; };
+		5DE77F8D1AC7D665002F24BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F891AC7D665002F24BA /* Main.storyboard */; };
+		5DE77F8E1AC7D665002F24BA /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F8A1AC7D665002F24BA /* MenuScene.sks */; };
+		5DE77F8F1AC7D665002F24BA /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE77F8B1AC7D665002F24BA /* MenuScene.swift */; };
+		5DE77F901AC7D665002F24BA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,10 +35,10 @@
 		5DE6CAD41AC10F39006FD79E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Watch those Lines/Info.plist"; sourceTree = "<group>"; };
 		5DE6CAD61AC10F39006FD79E /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuViewController.swift; path = "Watch those Lines/MenuViewController.swift"; sourceTree = "<group>"; };
 		5DE6CAD71AC10F39006FD79E /* ScoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreManager.swift; path = "Watch those Lines/ScoreManager.swift"; sourceTree = "<group>"; };
-		5DE77F791AC79BBB002F24BA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
-		5DE77F811AC7D3CD002F24BA /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
-		5DE77F831AC7D3FE002F24BA /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		5DE77F871AC7D42C002F24BA /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MenuScene.sks; sourceTree = "<group>"; };
+		5DE77F891AC7D665002F24BA /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Watch those Lines/Main.storyboard"; sourceTree = "<group>"; };
+		5DE77F8A1AC7D665002F24BA /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = MenuScene.sks; path = "Watch those Lines/MenuScene.sks"; sourceTree = "<group>"; };
+		5DE77F8B1AC7D665002F24BA /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuScene.swift; path = "Watch those Lines/MenuScene.swift"; sourceTree = "<group>"; };
+		5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "Watch those Lines/Launch Screen.xib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,12 +57,12 @@
 			children = (
 				5DE77F7D1AC7BB65002F24BA /* Score */,
 				5DE6CAC91AC10F39006FD79E /* AppDelegate.swift */,
-				5DE77F831AC7D3FE002F24BA /* Main.storyboard */,
-				5DE77F791AC79BBB002F24BA /* Launch Screen.xib */,
 				5DE6CACE1AC10F39006FD79E /* GameScene.sks */,
-				5DE77F871AC7D42C002F24BA /* MenuScene.sks */,
+				5DE77F891AC7D665002F24BA /* Main.storyboard */,
+				5DE77F8A1AC7D665002F24BA /* MenuScene.sks */,
+				5DE77F8B1AC7D665002F24BA /* MenuScene.swift */,
+				5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */,
 				5DE6CACF1AC10F39006FD79E /* GameScene.swift */,
-				5DE77F811AC7D3CD002F24BA /* MenuScene.swift */,
 				5DE6CAD01AC10F39006FD79E /* GameUtils.swift */,
 				5DE77F801AC7BF83002F24BA /* View Controllers */,
 				5DE6CAD31AC10F39006FD79E /* Images.xcassets */,
@@ -166,9 +166,9 @@
 				5DE6CAE71AC10F39006FD79E /* Images.xcassets in Resources */,
 				5DE6CAE21AC10F39006FD79E /* GameScene.sks in Resources */,
 				5DE6CAE81AC10F39006FD79E /* Info.plist in Resources */,
-				5DE77F841AC7D3FE002F24BA /* Main.storyboard in Resources */,
-				5DE77F7A1AC79BBB002F24BA /* Launch Screen.xib in Resources */,
-				5DE77F881AC7D42C002F24BA /* MenuScene.sks in Resources */,
+				5DE77F8E1AC7D665002F24BA /* MenuScene.sks in Resources */,
+				5DE77F8D1AC7D665002F24BA /* Main.storyboard in Resources */,
+				5DE77F901AC7D665002F24BA /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,10 +181,10 @@
 			files = (
 				5DE6CAE31AC10F39006FD79E /* GameScene.swift in Sources */,
 				5DE6CAE41AC10F39006FD79E /* GameUtils.swift in Sources */,
-				5DE77F821AC7D3CD002F24BA /* MenuScene.swift in Sources */,
 				5DE6CAEB1AC10F39006FD79E /* ScoreManager.swift in Sources */,
 				5DE6CADF1AC10F39006FD79E /* BestScore.swift in Sources */,
 				5DE6CAEA1AC10F39006FD79E /* MenuViewController.swift in Sources */,
+				5DE77F8F1AC7D665002F24BA /* MenuScene.swift in Sources */,
 				5DE6CAE61AC10F39006FD79E /* GameViewController.swift in Sources */,
 				5DE6CADD1AC10F39006FD79E /* AppDelegate.swift in Sources */,
 			);
