@@ -64,13 +64,14 @@ class MenuScene : SKScene {
     
     func initializeMenuButtons() -> Void {
         
-        self.reverse.alpha = 0.0
+ /*       self.reverse.alpha = 0.0
         reverse = GameUtils.getLabelNodeWithText("play (reverse with hex)", name: "playUp")
         reverse.name = "playUp"
         reverse.fontSize = 30
         self.addChild(reverse)
         reverse.position = CGPointMake(center.x, center.y - 80)
         reverse.runAction(fadeIn)
+*/
         
         self.scoreLabel.alpha = 0.0
         playButton = GameUtils.getLabelNodeWithText("play", name: "playButton");

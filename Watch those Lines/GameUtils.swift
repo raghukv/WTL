@@ -27,8 +27,8 @@ class GameUtils {
     }
     
     func createDrop() -> SKSpriteNode{
-        var min = 8
-        var max = 18
+        var min = 9
+        var max = 16
         var rand = UInt32(max - min)
         var radius : CGFloat = CGFloat(arc4random_uniform(rand))
         radius += CGFloat(min)

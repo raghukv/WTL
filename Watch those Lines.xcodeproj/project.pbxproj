@@ -22,6 +22,7 @@
 		5DE77F8F1AC7D665002F24BA /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE77F8B1AC7D665002F24BA /* MenuScene.swift */; };
 		5DE77F901AC7D665002F24BA /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */; };
 		5DE77F921AC7D70A002F24BA /* GameSceneReverse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE77F911AC7D70A002F24BA /* GameSceneReverse.swift */; };
+		5DE77F941AC8A0C4002F24BA /* TryAgainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE77F931AC8A0C4002F24BA /* TryAgainScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		5DE77F8B1AC7D665002F24BA /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuScene.swift; path = "Watch those Lines/MenuScene.swift"; sourceTree = "<group>"; };
 		5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "Launch Screen.xib"; path = "Watch those Lines/Launch Screen.xib"; sourceTree = "<group>"; };
 		5DE77F911AC7D70A002F24BA /* GameSceneReverse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameSceneReverse.swift; path = "Watch those Lines/GameSceneReverse.swift"; sourceTree = "<group>"; };
+		5DE77F931AC8A0C4002F24BA /* TryAgainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TryAgainScene.swift; path = "Watch those Lines/TryAgainScene.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				5DE77F891AC7D665002F24BA /* Main.storyboard */,
 				5DE77F8A1AC7D665002F24BA /* MenuScene.sks */,
 				5DE77F8B1AC7D665002F24BA /* MenuScene.swift */,
+				5DE77F931AC8A0C4002F24BA /* TryAgainScene.swift */,
 				5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */,
 				5DE77F911AC7D70A002F24BA /* GameSceneReverse.swift */,
 				5DE6CACF1AC10F39006FD79E /* GameScene.swift */,
@@ -183,6 +186,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5DE6CAE31AC10F39006FD79E /* GameScene.swift in Sources */,
+				5DE77F941AC8A0C4002F24BA /* TryAgainScene.swift in Sources */,
 				5DE6CAE41AC10F39006FD79E /* GameUtils.swift in Sources */,
 				5DE6CAEB1AC10F39006FD79E /* ScoreManager.swift in Sources */,
 				5DE77F921AC7D70A002F24BA /* GameSceneReverse.swift in Sources */,

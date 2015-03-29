@@ -64,19 +64,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var menuButton = SKSpriteNode()
     
     var tryAgainLabel = SKSpriteNode()
+    
+    var dropFadeIn = SKAction.fadeAlphaTo(0.9, duration: 0.7)
 
     override func didMoveToView(view: SKView) {
 
-        
         self.physicsWorld.contactDelegate = self
         self.physicsWorld.gravity = CGVectorMake(0, 0.0)
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        self.physicsBody?.categoryBitMask = boundaryCategory
         
         showInstructions()
     }
     
     func tryAgain() -> Void {
+        
         setUpControlObject()
+        
         resetAndBeginGame()
     }
     
@@ -179,29 +183,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlCircle.physicsBody?.collisionBitMask = dropCategory | waterCategory
         
         controlCircle.name = "controlObj"
-//        var rotate = SKAction.rotateByAngle(90, duration: 20)
-//        var rotateAction = SKAction.repeatActionForever(rotate)
-//        controlCircle.runAction(rotateAction)
+
     }
     
     func showInstructions() -> Void {
         self.instructionText = gameUtils.drawInstructions()
         self.instructionText.name = "instructions"
-        self.instructionText.position = CGPointMake(CGRectGetMidX(self.scene!.frame), CGRectGetMidY(self.scene!.frame) + 150)
+        self.instructionText.position = CGPointMake(self.frame.midX, self.frame.midY + 150)
         self.addChild(instructionText)
         var fadeIn = SKAction.fadeInWithDuration(0.7)
         instructionText.runAction(fadeIn)
         
         setUpControlObject()
         
-        
         self.finger = gameUtils.drawFinger()
         self.finger.name = "finger"
         self.finger.position = CGPointMake(CGRectGetMidX(self.scene!.frame), CGRectGetMidY(self.scene!.frame) - 150)
         self.addChild(finger)
-        
-//        var circle = gameUtils.createFingerPath()
-//        var move = SKAction.followPath(circle.CGPath, duration: 2)
+
         var left = SKAction.moveByX(-100, y: 0, duration: 0.5)
         var right = SKAction.moveByX(+200, y: 0, duration: 1)
         self.finger.runAction(fadeIn)
@@ -258,7 +257,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func setUpWater()-> Void {
         var size: CGSize = CGSizeMake(self.frame.size.width + 10, self.frame.size.height)
         self.water = gameUtils.drawWaterLevel(size)
-        self.water.position = CGPointMake(CGRectGetMidX(self.frame), -self.frame.height/2)
+        self.water.position = CGPointMake(self.frame.midX, self.frame.midY - self.frame.height)
         self.addChild(water)
         var waterBody = SKPhysicsBody(rectangleOfSize: size)
         waterBody.dynamic = false
@@ -347,27 +346,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func randomRainDrops() -> Void{
         
-        var min = self.frame.origin.x + 30
-        var max = self.frame.width - 20
+        var min = self.frame.minX + 30
+        var max = self.frame.maxX - 20
         var xValue = Int(arc4random_uniform(UInt32(max - min + 1)))
-        var drop = gameUtils.createDrop()
-
-        drop.position = CGPointMake(CGFloat(xValue), self.frame.height)
-        self.addChild(drop) 
         
+        /* Set up Drop and assign actions */
+        var drop = gameUtils.createDrop()
+        drop.position = CGPointMake(CGFloat(xValue), self.frame.maxY)
+        self.addChild(drop)
         drop.physicsBody?.categoryBitMask = dropCategory
         drop.physicsBody?.contactTestBitMask = mainCategory | waterCategory
         drop.physicsBody?.collisionBitMask = mainCategory | waterCategory
         drop.name = "Drop"
-        
-        
-        var fadeIn = SKAction.fadeAlphaTo(0.9, duration: 0.7)
         var fall = SKAction.moveTo(CGPointMake(drop.position.x, -self.frame.height), duration: dropSpeed)
-        var fallWithFade = SKAction.group([fadeIn, fall])
+        var fallWithFade = SKAction.group([dropFadeIn, fall])
         var kill = SKAction.runBlock({
             drop.removeFromParent()
         })
         
+        /** Set up Hint Line and assign actions */
         var hintLine = gameUtils.drawHintLine(self.frame.height)
         hintLine.position = CGPointMake(drop.position.x, CGRectGetMidY(self.frame))
         self.addChild(hintLine)
@@ -378,9 +375,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         })
         var wait = SKAction.waitForDuration(0.25)
         var hintAction = SKAction.runBlock({
-                hintLine.runAction(SKAction.sequence([inHint, outHint, killHint]), withKey: "hintFlash")
+            hintLine.runAction(SKAction.sequence([inHint, outHint, killHint]), withKey: "hintFlash")
         })
         
+        /* Run Hint Line Flash. On completion run Drop action*/
         var animation = SKAction.sequence([wait, fallWithFade, kill])
         var dropAction = SKAction.runBlock({drop.runAction(animation, withKey: "dropFall")})
         
@@ -389,17 +387,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         })
     }
     
+    /*  This method is called with updated difficulty parameters.
+        Waiting period between drops is an action. Generating Drops is another action.
+        Both are put in a sequence and run forever until game ends.
+    */
     func mainLoop(interval: Double) -> Void{
+        
+        // Remove previous action
         self.removeActionForKey("gameLoop")
         
+        // Waiting period between each drop
         var wait = SKAction.waitForDuration(self.dropGenerationInterval)
+        
         
         var drop = SKAction.runBlock({
             self.randomRainDrops()
         })
-        
         gameLoop = SKAction.repeatActionForever(SKAction.sequence([wait, drop]))
         
+        //run with action identifier key. This key is used to cancel the action and 
+        // re-run with updated difficulty parameters
         self.runAction(gameLoop, withKey: "gameLoop")
     }
 
@@ -408,6 +415,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var firstBody : SKNode = contact.bodyA.node!
         var secondBody : SKNode = contact.bodyB.node!
         
+        // wait for a slight second and then run the end game methods
+        // the 0.5 lag is introduced to ensure smooth collision
         if(endGameCondition(firstBody, secondBody: secondBody))
         {
             gameEnded = true
@@ -421,7 +430,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.runAction(wait, completion: {Void in
                     self.endTheGame()
             })
-        
         }
         
         else if (collectibleCondition(firstBody, secondBody: secondBody))
@@ -432,8 +440,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 secondBody.removeFromParent()
             }
             
-            gameUtils.flash(self.water)
+            //remove water movement action
+            //push back the water a bit
+            //re-run the water movement action
             
+            gameUtils.flash(self.water)
             water.removeActionForKey("moveWaterUp")
             var moveWaterDown = SKAction.moveByX(0, y: -60, duration: 2)
             water.runAction(moveWaterDown, withKey: "moveDown")
@@ -455,9 +466,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         node.runAction(SKAction.sequence([fadeOut, fadeIn, fadeOut, fadeIn]))
     }
     
+    /*
+    This method is called when the end game condition is met.
+    Removes all nodes except the score label.
+    Score label is moved down and buttons are generated.
+    Score is saved.
+*/
     func endTheGame(){
-        
-    
         self.gameEnded = true
         self.gameBegan = false
         self.removeActionForKey("gameLoop");
@@ -500,7 +515,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
-        
         if gameEnded {
          return
         }
@@ -519,7 +533,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if(self.frame.contains(checkPos) && self.frame.contains(checkPosTwo)){
 //        if(self.frame.contains(newPos)){
-            
             controlCircle.position = newPos
         }else{
             controlCircle.position.y = newPos.y
@@ -575,29 +588,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             timeSinceLast = 1.0 / 60.0;
             self.lastUpdateTimeInterval = currentTime;
         }
-        
         self.updateWithTimeSinceLastUpdate(timeSinceLast)
-    
     }
     
+    /*
+    Game is updated every second.
+    Updates score.
+    Contains the whole difficulty logic and game simulation code.
+    
+    dropGenerationInterval - the time between each drop
+    
+    dropSpeed              - the speed with which the drop falls (really the duration of fall)
+    
+    waterLevelDangerous    - if water climbs more than 2/3rds of the screen, this becomes true
+                             We spawn diamonds more frequently to help the player recoupe.
+    
+    */
     func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval) -> Void{
         self.lastSpawnTimeInterval = self.lastSpawnTimeInterval + timeSinceLast;
-        
-            self.scoreLabel.text = String(format:"%d", self.score)
+        self.scoreLabel.text = String(format:"%d", self.score)
         
         if (self.lastSpawnTimeInterval > 1) {
-            
-            if(gameEnded){
-                
-            }
-            
-            if(!instructionsDone || !gameBegan){
+            if(!instructionsDone || !gameBegan || gameEnded){
                 return
             }
+            
             self.lastSpawnTimeInterval = 0;
             self.totalElapsedTime += 1
             self.score += 1
-            
             
             if((water.position.y + (water.frame.height/1.3)) > CGRectGetMidY(self.frame)){
                 waterLevelDangerous = true;
@@ -605,15 +623,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 waterLevelDangerous = false;
             }
             
-            
-//                gameUtils.straightenControl(self.controlCircle)
-            
+            /*
+            Until 140 seconds, the frequency of drops increases every 7 seconds
+            */
             if(self.score > 1 && self.score <= 140 && self.score % 7 == 0){
-                // every 5 seconds for 20 times
+                // every 7 seconds for 20 times
                 self.dropGenerationInterval -= 0.030
+                //action called with new frequency value
                 mainLoop(self.dropGenerationInterval)
             }
             
+            /*
+            After 20 seconds, horizontal drops are generated every 3 and 5 seconds
+            After 120 seconds, they are generated every 1 and 2 seconds.
+            The method parameter for horizontalRainDrops is the direction (from left or right)
+            */
             if(self.score > 20 && self.score < 120 && self.score % 3 == 0){
                 horizontalRainDrops(1)
             }
@@ -622,7 +646,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
             if(self.score > 120 && self.score % 1 == 0){
-                horizontalRainDrops(2)
+                horizontalRainDrops(1)
             }
             
             if(self.score > 120 && self.score % 2 == 0){
@@ -633,6 +657,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.dropSpeed -= 0.150
             }
             
+            
+            /*
+            After 60 seconds, the lifespan of the diamond decreases.
+            Further decreases after 120 seconds.
+            */
             if(score == 60){
                 self.diamondLifeSpan -= 0.3
             }
@@ -640,11 +669,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 self.diamondLifeSpan -= 0.3
             }
             
+            /*
+            Begin movement of water after 14 seconds
+            */
             if(self.score == 14){
                 moveWaterUp()
             }
             
-            if(waterLevelDangerous && self.score > 12 && self.score % 2 == 0){
+            
+            /*
+            If waterLevelDangerous, spawn more diamonds, else remain same
+*/
+            if(waterLevelDangerous && self.score > 14 && self.score % 2 == 0){
                 spawnDiamond(self.diamondLifeSpan)
             }
             
