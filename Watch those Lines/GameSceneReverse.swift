@@ -64,6 +64,9 @@ class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
     var menuButton = SKSpriteNode()
     
     var tryAgainLabel = SKSpriteNode()
+    
+    var ninety = CGFloat(GLKMathDegreesToRadians(-7))
+    var minusninety = CGFloat(GLKMathDegreesToRadians(7))
 
     override func didMoveToView(view: SKView) {
 
@@ -181,7 +184,7 @@ class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
         controlCircle.name = "controlObj"
         var rotate = SKAction.rotateByAngle(90, duration: 30)
         var rotateAction = SKAction.repeatActionForever(rotate)
-        controlCircle.runAction(rotateAction)
+//        controlCircle.runAction(rotateAction)
     }
     
     func showInstructions() -> Void {
@@ -228,14 +231,14 @@ class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
         
         var waterBottomPosition = water.frame.minY
         
-        var minY = Int(self.frame.minY + 100)
-        var maxY = Int(waterBottomPosition - 200)
+        var lowerY = Int(self.frame.minY + 100)
+        var upperY = Int(waterBottomPosition - 200)
 
         var yValue : CGFloat!
-        if maxY > minY{
-            yValue = CGFloat(gameUtils.randRange(minY, upper: maxY))
-        } else if minY > maxY{
-            yValue = CGFloat(gameUtils.randRange(maxY, upper: minY))
+        if upperY > lowerY{
+            yValue = CGFloat(gameUtils.randRange(lowerY, upper: upperY))
+        } else if lowerY > upperY{
+            yValue = CGFloat(gameUtils.randRange(upperY, upper: lowerY))
         }
         
         diamond.position = CGPointMake(xValue, yValue)
@@ -358,8 +361,8 @@ class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
         self.addChild(drop)
         
         drop.physicsBody?.categoryBitMask = dropCategory
-        drop.physicsBody?.contactTestBitMask = mainCategory
-        drop.physicsBody?.collisionBitMask = mainCategory
+        drop.physicsBody?.contactTestBitMask = mainCategory | boundaryCategory
+        drop.physicsBody?.collisionBitMask = mainCategory | boundaryCategory
         drop.name = "Drop"
         
         
@@ -522,11 +525,19 @@ class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
         
         
         var deltaX = Float(currentTouch.x - previousTouch.x)
-        var deltaY = Float(currentTouch.y - previousTouch.y)
-        var radians = atan2f(deltaX, deltaY)
-
+        /*var deltaY = Float(currentTouch.y - previousTouch.y)
+        var radians = atan2(deltaY, deltaX)
         var degrees = GLKMathRadiansToDegrees(radians)
-//        controlCircle.zRotation = CGFloat(radians)
+//        println(degrees)
+//        controlCircle.zRotation = CGFloat(radians)*/
+//        print(deltaX)
+        if(newPos.x > controlCircle.position.x){
+            controlCircle.runAction(SKAction.rotateByAngle(ninety, duration: 0.2))
+        }else{
+            controlCircle.runAction(SKAction.rotateByAngle(minusninety, duration: 0.2))
+        }
+        
+//        controlCircle.runAction(SKAction.rotateByAngle(CGFloat(radians), duration: 0.5))
         
         var newRect = (CGRectMake(newPos.x, newPos.y, controlCircle.frame.width, controlCircle.frame.height))
 
@@ -695,8 +706,8 @@ class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
     }
     
     func sinkCondition(firstBody:SKNode, secondBody: SKNode) -> Bool{
-        if(firstBody.physicsBody!.categoryBitMask == dropCategory && secondBody.physicsBody?.categoryBitMask == waterCategory ||
-            firstBody.physicsBody?.categoryBitMask == waterCategory && secondBody.physicsBody?.categoryBitMask == dropCategory){
+        if(firstBody.physicsBody!.categoryBitMask == dropCategory && secondBody.physicsBody?.categoryBitMask == boundaryCategory ||
+            firstBody.physicsBody?.categoryBitMask == waterCategory && secondBody.physicsBody?.categoryBitMask == boundaryCategory){
                 return true;
         }
         
