@@ -13,14 +13,18 @@ import spritekit
 
 class GameUtils {
     
-  //  let redColor = SKColor(red: 134/255, green: 61/255, blue: 61/255, alpha: 1.0)
-      let darkColor = SKColor(red: 63/255, green: 55/255, blue: 43/255, alpha: 1.0)
+//  let redColor = SKColor(red: 134/255, green: 61/255, blue: 61/255, alpha: 1.0)
+    let darkColor = SKColor(red: 63/255, green: 55/255, blue: 43/255, alpha: 1.0)
     
-    let blueColor = UIColor(red: 60/255, green: 96/255, blue: 127/255, alpha: 1.0)
+    let blueColor = SKColor(red: 60/255, green: 96/255, blue: 127/255, alpha: 1.0)
     
+    class func getDarkColor () -> SKColor {
+        return SKColor(red: 63/255, green: 55/255, blue: 43/255, alpha: 1.0)
+    }
     
-    
-    
+    class func getBlueColor () -> SKColor {
+        return SKColor(red: 60/255, green: 96/255, blue: 127/255, alpha: 1.0)
+    }
     
     func createDrop() -> SKSpriteNode{
         var min = 8
@@ -32,8 +36,6 @@ class GameUtils {
         drop.color = UIColor.clearColor()
         drop.size = CGSizeMake(radius * 2, radius * 2)
         var dropBody = SKPhysicsBody(circleOfRadius: radius)
-//        dropBody.dynamic = true
-//        dropBody.usesPreciseCollisionDetection = true
         drop.physicsBody = dropBody
         var dropPath = CGPathCreateWithEllipseInRect(CGRectMake((-drop.size.width/2), -drop.size.height/2, drop.size.width, drop.size.width),
             nil)
@@ -138,18 +140,16 @@ class GameUtils {
 
     }
     
-    func getLabelSpriteWithText(text: String, name: String) -> SKSpriteNode{
-        var sprite = SKSpriteNode()
+    class func getLabelNodeWithText(text: String, name: String) -> SKLabelNode{
         var label = SKLabelNode(fontNamed: "Heiti TC Light")
-        sprite.name = name
+        label.name = name
         label.text = text
-        label.fontColor = self.darkColor
-        label.fontSize = 30
-        sprite.addChild(label)
+        label.fontColor = getBlueColor()
+        label.fontSize = 40
         
-        sprite.alpha = 0.0
+        label.alpha = 0.0
         
-        return sprite
+        return label
 
     }
     

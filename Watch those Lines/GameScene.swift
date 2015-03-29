@@ -171,9 +171,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(controlCircle)
         
         gameUtils.fadeIn(controlCircle, duration: 0.7)
-        controlCircle.physicsBody?.friction = 0.0
         controlCircle.physicsBody?.allowsRotation = false
-//        controlCircle.physicsBody?.usesPreciseCollisionDetection = true
         controlCircle.physicsBody?.dynamic = true
         controlCircle.physicsBody?.affectedByGravity = false
         controlCircle.physicsBody?.categoryBitMask = mainCategory
@@ -519,11 +517,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var checkPos = CGPointMake(newX - controlCircle.frame.width/2, newY)
         var checkPosTwo = CGPointMake(newX + controlCircle.frame.width/2, newY)
         
-
-//        var dX = newPos.x - controlCircle.position.x
-//        var dY = newPos.y - controlCircle.position.y
-//        var angle = (atan2(dY, dX))
-//        controlCircle.zRotation = angle;
         if(self.frame.contains(checkPos) && self.frame.contains(checkPosTwo)){
 //        if(self.frame.contains(newPos)){
             
@@ -554,10 +547,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         else if (nodeName == menu){
             
-            self.view?.window?.rootViewController?.dismissViewControllerAnimated(true,
-                completion: { () -> Void in
-                    
-            })
+            var scene = MenuScene()
+            var trans = SKTransition.doorsCloseVerticalWithDuration(0.5)
+            var skView = self.view as SKView!
+            scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+            scene.size = skView.bounds.size
+            scene.scaleMode = SKSceneScaleMode.AspectFill
+            self.scene!.view!.presentScene(scene, transition: trans)
         }
     }
     

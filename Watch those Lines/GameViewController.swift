@@ -16,7 +16,7 @@ extension SKNode {
             var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
             
             archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
-            let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as GameScene
+            let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as MenuScene
             archiver.finishDecoding()
             return scene
         } else {
@@ -36,7 +36,7 @@ class GameViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         
         super.viewWillLayoutSubviews()
-        if let scene = GameScene.unarchive("GameScene") as? GameScene {
+        if var scene = MenuScene.unarchive("MenuScene") as? MenuScene {
             
             
             // Configure the view.
@@ -53,10 +53,8 @@ class GameViewController: UIViewController {
             /* Set the scale mode to scale to fit the window */
             scene.scaleMode = .AspectFill
             
-            scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1.0)
-                
-                
-            
+            scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+        
             skView.presentScene(scene)
         }
 
