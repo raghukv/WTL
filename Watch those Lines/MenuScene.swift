@@ -30,11 +30,9 @@ class MenuScene : SKScene {
         
         var factor = self.frame.height / 16
         for (var i = 1; i <= 16; i++){
-//            var line = gameUtils.drawHorizontalHintLine(self.frame.width)
-//            line.alpha = 0.1
-//            var yValue = CGFloat(i) * factor
-//            line.position = CGPointMake(self.frame.midX, yValue)
-//            self.addChild(line)
+            
+            //add below yValues to list
+            var yValue = CGFloat(i) * factor
         }
         
         
