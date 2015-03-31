@@ -27,9 +27,21 @@ class MenuScene : SKScene {
     
     
     override func didMoveToView(view: SKView) {
+        
+        var factor = self.frame.height / 16
+        for (var i = 1; i <= 16; i++){
+//            var line = gameUtils.drawHorizontalHintLine(self.frame.width)
+//            line.alpha = 0.1
+//            var yValue = CGFloat(i) * factor
+//            line.position = CGPointMake(self.frame.midX, yValue)
+//            self.addChild(line)
+        }
+        
+        
+        println(self.frame.height, self.frame.width)
         self.center = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
         loadHighScore()
-        
+
         doLoadAnimation()
         
     }
