@@ -634,9 +634,7 @@ class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
             }else{
                 waterLevelDangerous = false
             }
-            
-            
-//                gameUtils.straightenControl(self.controlCircle)
+
             
             if(self.score > 1 && self.score <= 140 && self.score % 7 == 0){
                 // every 5 seconds for 20 times
