@@ -66,7 +66,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var tryAgainLabel = SKSpriteNode()
     
     var dropFadeIn = SKAction.fadeAlphaTo(0.9, duration: 0.7)
-
+    
+    var showInstructions = true;
+    
     override func didMoveToView(view: SKView) {
 
         self.physicsWorld.contactDelegate = self
@@ -74,10 +76,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         self.physicsBody?.categoryBitMask = boundaryCategory
         
-        showInstructions()
+        if(self.showInstructions){
+            playInstructions()
+        }else{
+            instructionsDone = true
+            setUpControlAndBeginGame()
+        }
     }
     
-    func tryAgain() -> Void {
+    func setUpControlAndBeginGame() -> Void {
         
         setUpControlObject()
         
@@ -141,14 +148,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func initiateRain() -> Void {
         var wait : SKAction!
-        if(!instructionsDone){
+        if(!instructionsDone && showInstructions){
             instructionsDone = true
             showAvoidInstruction()
             wait = SKAction.waitForDuration(4)
         }else{
-            wait = SKAction.waitForDuration(2)
+            wait = SKAction.waitForDuration(1)
         }
-//        var wait = SKAction.waitForDuration(4)
+
         var start = SKAction.runBlock({
             self.mainLoop(self.dropGenerationInterval)
             self.gameBegan = true
@@ -203,7 +210,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     }
     
-    func showInstructions() -> Void {
+    func playInstructions() -> Void {
         self.instructionText = gameUtils.drawInstructions()
         self.instructionText.name = "instructions"
         self.instructionText.position = CGPointMake(self.frame.midX, self.frame.midY + 150)
@@ -490,40 +497,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     Score is saved.
 */
     func endTheGame(){
+        
         self.gameEnded = true
         self.gameBegan = false
-        self.removeActionForKey("gameLoop");
-        self.removeActionForKey("moveWaterUp");
         
-        var childList = self.children
-        var length = childList.count
-        for(var i = 0; i < length; i++){
-            var child : SKNode = childList[i] as SKNode
-            
-            if(child.name == "scoreLabel"){
-               continue
-            }
-            child.removeAllActions()
-            gameUtils.fadeOutAndKill(child)
-        }
-        
-        self.scoreLabel.runAction(SKAction.fadeAlphaTo(1, duration: 1.0))
-        self.scoreLabel.runAction(SKAction.moveToY(CGRectGetMidY(self.frame)-100, duration: 1.0))
+        var transition = SKTransition.doorsCloseHorizontalWithDuration(0.5)
+        var skView = self.view as SKView!
+        var tryScene : TryAgainScene = TryAgainScene()
+        tryScene.score = self.score
+        tryScene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+        tryScene.size = skView.bounds.size
+        tryScene.scaleMode = SKSceneScaleMode.AspectFill
+        self.scene!.view!.presentScene(tryScene, transition: transition)
 
-        tryAgainLabel = gameUtils.drawTryAgain()
-        tryAgainLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)-200)
-        self.addChild(tryAgainLabel)
-        var fadeInLabel = SKAction.fadeInWithDuration(1.0)
-        tryAgainLabel.runAction(fadeInLabel, completion: { () -> Void in
-                  self.disableTryAgain = false;
-        })
-        self.menuButton = gameUtils.drawMenuButton()
-        menuButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)-250)
-        self.addChild(menuButton)
-        menuButton.runAction(fadeInLabel)
-        
-        scoreManager.addNewScore(self.score)
-        scoreManager.save()
     }
 
     func fadeAndKillNode(drop: SKNode) -> Void {
@@ -560,6 +546,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    /*
     override func touchesBegan (touches: NSSet, withEvent event: UIEvent)
     {
         //Get touch coordinates in location view
@@ -586,6 +573,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.scene!.view!.presentScene(scene, transition: trans)
         }
     }
+*/
     
     override func update(currentTime: CFTimeInterval) {
         

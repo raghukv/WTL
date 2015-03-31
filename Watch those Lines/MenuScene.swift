@@ -98,6 +98,7 @@ class MenuScene : SKScene {
             scene.size = skView.bounds.size
             scene.scaleMode = SKSceneScaleMode.AspectFill
             self.scene!.view!.presentScene(scene, transition: trans)
+            
         }else if (node.name == "playUp"){
             var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
             var skView = self.view as SKView!
