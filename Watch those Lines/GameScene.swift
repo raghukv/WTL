@@ -10,64 +10,83 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    /* Manages the score*/
     var scoreManager = ScoreManager()
     
-    // less value higher frequency
+    /* Generates nodes */
+    var gameUtils = GameUtils()
+    
+/*
+    PROPERTIES THAT DETERMINE DIFFICULTY OF THE GAME
+    
+    dropGenerationInterval - The time between generation of each drop
+    horizontalDropInterval - The time between generation of each horizontal drop
+    diamondLifeSpan        - The amount of time a diamond is available to collect
+    dropFallDuration       - The time taken by the drop to reach the ground
+    waterLevelDangerous    - Boolean to denote if the water level is too high
+*/
     var dropGenerationInterval : Double = 1.0
-    
     var horizontalDropInterval: Double = 5.0
-    
+    var dropFallDuration : Double = 6.0
     var diamondLifeSpan : Double = 1.5
-    
-    // less value higher frequency
-    var dropSpeed : Double = 6.0
-    
-    var totalElapsedTime : CFTimeInterval = 0
-    
-    var gameEnded : Bool = false;
-    
-    var gameBegan : Bool = false;
-    
-    var disableTryAgain : Bool = false;
-    
     var waterLevelDangerous : Bool = false;
     
-    var instructionsDone : Bool = false;
     
+/*
+    PROPERTIES THAT CONTROL THE FLOW OF THE GAME
+    
+    gameBegan - Boolean that says if the game has begun
+    gameEnded - Boolean that says if the game has ended
+    instructionsDone - Boolean that says if the instructions have been completed
+    showInstructions - Boolean that determines whether instructions must be shown
+*/
+    var gameBegan : Bool = false;
+    var gameEnded : Bool = false;
+    var instructionsDone : Bool = false;
+    var showInstructions = true;
+
+/*
+    TIME CONTROL PARAMETERS
+    To ensure updating the game at the required intervals
+*/
+    var totalElapsedTime : CFTimeInterval = 0
+    var lastUpdateTimeInterval: CFTimeInterval = 0;
+    var lastSpawnTimeInterval: CFTimeInterval = 0;
+
+    
+/*
+    PHYSICS BODY CATEGORIES
+    A category is given to a node to detect collision
+*/
     var mainCategory : UInt32 = 0x1 << 0
     var dropCategory: UInt32 = 0x1 << 1
     var boundaryCategory: UInt32 = 0x1 << 2
     var collectibleCategory: UInt32 = 0x1 << 3
     var waterCategory: UInt32 = 0x1 << 4
     
+    
+    /* Main object that is controlled by the user*/
     var controlCircle = SKSpriteNode();
     
-    var instructionText = SKSpriteNode();
-    
-    var finger = SKSpriteNode();
-    
+    /* Water that rises from below(and above in future updates) */
     var water = SKShapeNode()
     
-    var gameUtils = GameUtils()
-
-    var lastUpdateTimeInterval: CFTimeInterval = 0;
-    var lastSpawnTimeInterval: CFTimeInterval = 0;
-
-    var gameLoop : SKAction = SKAction()
-    
-    var scoreLabel: SKLabelNode = SKLabelNode(text: "0")
-    
-    var countDown : SKLabelNode = SKLabelNode()
-    
+    /* Score bro! */
     var score = 0
     
-    var menuButton = SKSpriteNode()
+    /* Label node that displays the score*/
+    var scoreLabel: SKLabelNode = SKLabelNode(text: "0")
     
-    var tryAgainLabel = SKSpriteNode()
+    /* Objects involved in displaying the instructions */
+    var instructionText = SKSpriteNode();
+    var finger = SKSpriteNode();
     
+    /* Main Loop of the game. This action repeats forever until game ends*/
+    var gameLoop : SKAction = SKAction()
+    
+    /* Fade in action initialized here for performance. */
     var dropFadeIn = SKAction.fadeAlphaTo(0.9, duration: 0.7)
     
-    var showInstructions = true;
     
     override func didMoveToView(view: SKView) {
 
@@ -93,8 +112,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func resetAndBeginGame(){
         
-        self.disableTryAgain = true;
-        
         self.score = 0
         
         self.totalElapsedTime = CFTimeInterval(0)
@@ -103,7 +120,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         diamondLifeSpan = 1.5
         
-        dropSpeed = 4.0
+        dropFallDuration = 4.0
         
         gameEnded = false;
         
@@ -337,9 +354,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         drop.physicsBody?.collisionBitMask = mainCategory | waterCategory
         drop.name = "Drop"
         
-        var passThrough = SKAction.moveTo(CGPointMake(toX, yValue), duration: dropSpeed - 1.0)
-        var dropFadeIN = SKAction.fadeAlphaTo(0.7, duration: (dropSpeed-1)/2)
-        var dropFadeOut = SKAction.fadeAlphaTo(0.0, duration: (dropSpeed-1)/2)
+        var passThrough = SKAction.moveTo(CGPointMake(toX, yValue), duration: dropFallDuration - 1.0)
+        var dropFadeIN = SKAction.fadeAlphaTo(0.7, duration: (dropFallDuration-1)/2)
+        var dropFadeOut = SKAction.fadeAlphaTo(0.0, duration: (dropFallDuration-1)/2)
         var fadeInFadeOut = SKAction.sequence([dropFadeIN, dropFadeOut])
         var passWithFadeInFadeOut = SKAction.group([passThrough, fadeInFadeOut])
 
@@ -382,7 +399,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         drop.physicsBody?.contactTestBitMask = mainCategory | waterCategory
         drop.physicsBody?.collisionBitMask = mainCategory | waterCategory
         drop.name = "Drop"
-        var fall = SKAction.moveTo(CGPointMake(drop.position.x, -self.frame.height), duration: dropSpeed)
+        var fall = SKAction.moveTo(CGPointMake(drop.position.x, -self.frame.height), duration: dropFallDuration)
         var fallWithFade = SKAction.group([dropFadeIn, fall])
         var kill = SKAction.runBlock({
             drop.removeFromParent()
@@ -492,10 +509,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     /*
     This method is called when the end game condition is met.
-    Removes all nodes except the score label.
-    Score label is moved down and buttons are generated.
-    Score is saved.
-*/
+    Transition to the TryAgain Scene where scores are saved
+    */
     func endTheGame(){
         
         self.gameEnded = true
@@ -659,7 +674,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
             if(self.score > 1 && self.score <= 64 && self.score % 8 == 0){
-                self.dropSpeed -= 0.150
+                self.dropFallDuration -= 0.150
             }
             
             
