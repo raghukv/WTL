@@ -7,16 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5D64AD0F1ACA21DF00AC1946 /* TryAgainScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5D64AD0E1ACA21DF00AC1946 /* TryAgainScene.sks */; };
+		5D64AD111ACB06B900AC1946 /* InstructionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D64AD101ACB06B900AC1946 /* InstructionScene.swift */; };
+		5D64AD131ACB6B8300AC1946 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D64AD121ACB6B8300AC1946 /* UserPreferences.swift */; };
+		5D64AD151ACBB25600AC1946 /* PositionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D64AD141ACBB25600AC1946 /* PositionUtils.swift */; };
 		5DE6CADD1AC10F39006FD79E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAC91AC10F39006FD79E /* AppDelegate.swift */; };
 		5DE6CADF1AC10F39006FD79E /* BestScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CACB1AC10F39006FD79E /* BestScore.swift */; };
-		5DE6CAE21AC10F39006FD79E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5DE6CACE1AC10F39006FD79E /* GameScene.sks */; };
 		5DE6CAE31AC10F39006FD79E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CACF1AC10F39006FD79E /* GameScene.swift */; };
 		5DE6CAE41AC10F39006FD79E /* GameUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD01AC10F39006FD79E /* GameUtils.swift */; };
 		5DE6CAE61AC10F39006FD79E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD21AC10F39006FD79E /* GameViewController.swift */; };
 		5DE6CAE71AC10F39006FD79E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD31AC10F39006FD79E /* Images.xcassets */; };
 		5DE6CAEA1AC10F39006FD79E /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD61AC10F39006FD79E /* MenuViewController.swift */; };
-		5DE6CAEB1AC10F39006FD79E /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD71AC10F39006FD79E /* ScoreManager.swift */; };
+		5DE6CAEB1AC10F39006FD79E /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD71AC10F39006FD79E /* DataManager.swift */; };
 		5DE77F8D1AC7D665002F24BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F891AC7D665002F24BA /* Main.storyboard */; };
 		5DE77F8E1AC7D665002F24BA /* MenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5DE77F8A1AC7D665002F24BA /* MenuScene.sks */; };
 		5DE77F8F1AC7D665002F24BA /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE77F8B1AC7D665002F24BA /* MenuScene.swift */; };
@@ -26,18 +27,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5D64AD0E1ACA21DF00AC1946 /* TryAgainScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = TryAgainScene.sks; sourceTree = "<group>"; };
+		5D64AD101ACB06B900AC1946 /* InstructionScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InstructionScene.swift; path = "Watch those Lines/InstructionScene.swift"; sourceTree = "<group>"; };
+		5D64AD121ACB6B8300AC1946 /* UserPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserPreferences.swift; path = "Watch those Lines/UserPreferences.swift"; sourceTree = "<group>"; };
+		5D64AD141ACBB25600AC1946 /* PositionUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PositionUtils.swift; path = "Watch those Lines/PositionUtils.swift"; sourceTree = "<group>"; };
 		5DE6CAC71AC10F36006FD79E /* Watch those Lines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Watch those Lines.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DE6CAC91AC10F39006FD79E /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "Watch those Lines/AppDelegate.swift"; sourceTree = "<group>"; };
 		5DE6CACB1AC10F39006FD79E /* BestScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BestScore.swift; path = "Watch those Lines/BestScore.swift"; sourceTree = "<group>"; };
-		5DE6CACE1AC10F39006FD79E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene.sks; path = "Watch those Lines/GameScene.sks"; sourceTree = "<group>"; };
 		5DE6CACF1AC10F39006FD79E /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameScene.swift; path = "Watch those Lines/GameScene.swift"; sourceTree = "<group>"; };
 		5DE6CAD01AC10F39006FD79E /* GameUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameUtils.swift; path = "Watch those Lines/GameUtils.swift"; sourceTree = "<group>"; };
 		5DE6CAD21AC10F39006FD79E /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameViewController.swift; path = "Watch those Lines/GameViewController.swift"; sourceTree = "<group>"; };
 		5DE6CAD31AC10F39006FD79E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Watch those Lines/Images.xcassets"; sourceTree = "<group>"; };
 		5DE6CAD41AC10F39006FD79E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Watch those Lines/Info.plist"; sourceTree = "<group>"; };
 		5DE6CAD61AC10F39006FD79E /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuViewController.swift; path = "Watch those Lines/MenuViewController.swift"; sourceTree = "<group>"; };
-		5DE6CAD71AC10F39006FD79E /* ScoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScoreManager.swift; path = "Watch those Lines/ScoreManager.swift"; sourceTree = "<group>"; };
+		5DE6CAD71AC10F39006FD79E /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DataManager.swift; path = "Watch those Lines/DataManager.swift"; sourceTree = "<group>"; };
 		5DE77F891AC7D665002F24BA /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Watch those Lines/Main.storyboard"; sourceTree = "<group>"; };
 		5DE77F8A1AC7D665002F24BA /* MenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = MenuScene.sks; path = "Watch those Lines/MenuScene.sks"; sourceTree = "<group>"; };
 		5DE77F8B1AC7D665002F24BA /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MenuScene.swift; path = "Watch those Lines/MenuScene.swift"; sourceTree = "<group>"; };
@@ -61,29 +63,46 @@
 			isa = PBXGroup;
 			children = (
 				5DE77F7D1AC7BB65002F24BA /* Score */,
-				5DE6CAC91AC10F39006FD79E /* AppDelegate.swift */,
-				5DE6CACE1AC10F39006FD79E /* GameScene.sks */,
-				5DE77F891AC7D665002F24BA /* Main.storyboard */,
-				5DE77F8A1AC7D665002F24BA /* MenuScene.sks */,
-				5D64AD0E1ACA21DF00AC1946 /* TryAgainScene.sks */,
-				5DE77F8B1AC7D665002F24BA /* MenuScene.swift */,
-				5DE77F931AC8A0C4002F24BA /* TryAgainScene.swift */,
-				5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */,
-				5DE77F911AC7D70A002F24BA /* GameSceneReverse.swift */,
-				5DE6CACF1AC10F39006FD79E /* GameScene.swift */,
-				5DE6CAD01AC10F39006FD79E /* GameUtils.swift */,
+				5D64AD161ACBBA2100AC1946 /* Base */,
+				5D64AD171ACBBA3D00AC1946 /* Utils */,
 				5DE77F801AC7BF83002F24BA /* View Controllers */,
+				5DE6CAC91AC10F39006FD79E /* AppDelegate.swift */,
+				5DE77F8A1AC7D665002F24BA /* MenuScene.sks */,
+				5DE77F8B1AC7D665002F24BA /* MenuScene.swift */,
+				5D64AD101ACB06B900AC1946 /* InstructionScene.swift */,
+				5DE6CACF1AC10F39006FD79E /* GameScene.swift */,
+				5DE77F931AC8A0C4002F24BA /* TryAgainScene.swift */,
+				5DE77F911AC7D70A002F24BA /* GameSceneReverse.swift */,
 				5DE6CAD31AC10F39006FD79E /* Images.xcassets */,
 				5DE77F7F1AC7BF5D002F24BA /* Supporting Files */,
 				5DE77F7E1AC7BF50002F24BA /* Products */,
 			);
 			sourceTree = "<group>";
 		};
+		5D64AD161ACBBA2100AC1946 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				5DE77F891AC7D665002F24BA /* Main.storyboard */,
+				5DE77F8C1AC7D665002F24BA /* Launch Screen.xib */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		5D64AD171ACBBA3D00AC1946 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5D64AD141ACBB25600AC1946 /* PositionUtils.swift */,
+				5DE6CAD01AC10F39006FD79E /* GameUtils.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		5DE77F7D1AC7BB65002F24BA /* Score */ = {
 			isa = PBXGroup;
 			children = (
 				5DE6CACB1AC10F39006FD79E /* BestScore.swift */,
-				5DE6CAD71AC10F39006FD79E /* ScoreManager.swift */,
+				5DE6CAD71AC10F39006FD79E /* DataManager.swift */,
+				5D64AD121ACB6B8300AC1946 /* UserPreferences.swift */,
 			);
 			name = Score;
 			sourceTree = "<group>";
@@ -172,11 +191,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5DE6CAE71AC10F39006FD79E /* Images.xcassets in Resources */,
-				5DE6CAE21AC10F39006FD79E /* GameScene.sks in Resources */,
 				5DE77F8E1AC7D665002F24BA /* MenuScene.sks in Resources */,
 				5DE77F8D1AC7D665002F24BA /* Main.storyboard in Resources */,
 				5DE77F901AC7D665002F24BA /* Launch Screen.xib in Resources */,
-				5D64AD0F1ACA21DF00AC1946 /* TryAgainScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,9 +205,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5DE6CAE31AC10F39006FD79E /* GameScene.swift in Sources */,
+				5D64AD131ACB6B8300AC1946 /* UserPreferences.swift in Sources */,
 				5DE77F941AC8A0C4002F24BA /* TryAgainScene.swift in Sources */,
 				5DE6CAE41AC10F39006FD79E /* GameUtils.swift in Sources */,
-				5DE6CAEB1AC10F39006FD79E /* ScoreManager.swift in Sources */,
+				5D64AD111ACB06B900AC1946 /* InstructionScene.swift in Sources */,
+				5D64AD151ACBB25600AC1946 /* PositionUtils.swift in Sources */,
+				5DE6CAEB1AC10F39006FD79E /* DataManager.swift in Sources */,
 				5DE77F921AC7D70A002F24BA /* GameSceneReverse.swift in Sources */,
 				5DE6CADF1AC10F39006FD79E /* BestScore.swift in Sources */,
 				5DE6CAEA1AC10F39006FD79E /* MenuViewController.swift in Sources */,

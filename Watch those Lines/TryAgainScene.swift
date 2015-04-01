@@ -15,33 +15,36 @@ class TryAgainScene : SKScene {
     var menuLabel : SKLabelNode = SKLabelNode()
     var labelScore : SKLabelNode = SKLabelNode()
     var utils : GameUtils = GameUtils()
-    var scoreMan : ScoreManager = ScoreManager()
+    var scoreMan : DataManager = DataManager()
     var score = 0
+    var yValues : Dictionary<Int, CGFloat> = Dictionary<Int, CGFloat>();
     
     override func didMoveToView(view: SKView) {
+        
+        yValues = PositionUtils.getYvalues(self.frame)
+        
         var scoreString = "score " + String(score)
         
         labelScore = GameUtils.getLabelNodeWithText(scoreString, name: "scoreLabel")
         labelScore.alpha = 1.0
-        labelScore.fontSize = 35
-        labelScore.position = CGPointMake(self.frame.midX, self.frame.midY)
+        labelScore.fontSize = 40
+        labelScore.position = CGPointMake(self.frame.midX, yValues[10]!)
         self.addChild(labelScore)
         
         tryAgainLabel = GameUtils.getLabelNodeWithText("try Again", name: "tryAgain")
         tryAgainLabel.fontSize = 35
         tryAgainLabel.fontColor = GameUtils.getDarkColor()
         tryAgainLabel.alpha = 1.0
-        tryAgainLabel.position = CGPointMake(self.frame.midX, self.frame.midY-150)
+        tryAgainLabel.position = CGPointMake(self.frame.midX, yValues[6]!)
         self.addChild(tryAgainLabel)
         
         menuLabel = GameUtils.getLabelNodeWithText("menu", name: "menu")
         menuLabel.alpha = 1.0
         menuLabel.fontSize = 35
         menuLabel.fontColor = GameUtils.getDarkColor()
-        menuLabel.position = CGPointMake(self.frame.midX, self.frame.midY - 225)
+        menuLabel.position = CGPointMake(self.frame.midX, yValues[4]!)
         self.addChild(menuLabel)
-        scoreMan.addNewScore(score)
-        scoreMan.save()
+        scoreMan.addNewScoreAndSave(score)
     }
     
     override func touchesBegan (touches: NSSet, withEvent event: UIEvent)
@@ -56,7 +59,7 @@ class TryAgainScene : SKScene {
         if(nodeName == tryAgain){
             
             var scene = GameScene()
-            scene.showInstructions = false;
+//            scene.showInstructions = false;
             var trans = SKTransition.doorsOpenHorizontalWithDuration(0.5)
             var skView = self.view as SKView!
             scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)

@@ -16,7 +16,7 @@ class MenuViewController : UIViewController {
     @IBOutlet weak var titleImage: UIImageView!
     @IBOutlet weak var scoreLabel: UILabel!
     
-    var scoreManager = ScoreManager()
+    var scoreManager = DataManager()
     
     var scores:Array<BestScore> = [];
     

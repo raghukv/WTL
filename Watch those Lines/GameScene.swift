@@ -11,10 +11,13 @@ import SpriteKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     /* Manages the score*/
-    var scoreManager = ScoreManager()
+    var scoreManager = DataManager()
     
     /* Generates nodes */
     var gameUtils = GameUtils()
+    
+    var finger = SKSpriteNode();
+    var initialMovement = false;
     
 /*
     PROPERTIES THAT DETERMINE DIFFICULTY OF THE GAME
@@ -42,8 +45,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 */
     var gameBegan : Bool = false;
     var gameEnded : Bool = false;
-    var instructionsDone : Bool = false;
-    var showInstructions = true;
 
 /*
     TIME CONTROL PARAMETERS
@@ -77,38 +78,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     /* Label node that displays the score*/
     var scoreLabel: SKLabelNode = SKLabelNode(text: "0")
     
-    /* Objects involved in displaying the instructions */
-    var instructionText = SKSpriteNode();
-    var finger = SKSpriteNode();
-    
     /* Main Loop of the game. This action repeats forever until game ends*/
     var gameLoop : SKAction = SKAction()
     
     /* Fade in action initialized here for performance. */
     var dropFadeIn = SKAction.fadeAlphaTo(0.9, duration: 0.7)
     
+    var yValues : Dictionary<Int, CGFloat> = Dictionary<Int, CGFloat>();
+    
     
     override func didMoveToView(view: SKView) {
+        
+        yValues = PositionUtils.getYvalues(self.frame)
 
         self.physicsWorld.contactDelegate = self
         self.physicsWorld.gravity = CGVectorMake(0, 0.0)
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         self.physicsBody?.categoryBitMask = boundaryCategory
+
+        playInstructions()
         
-        if(self.showInstructions){
-            playInstructions()
-        }else{
-            instructionsDone = true
-            setUpControlAndBeginGame()
-        }
     }
     
-    func setUpControlAndBeginGame() -> Void {
+    func playInstructions() -> Void {
         
+        var fadeIn = SKAction.fadeInWithDuration(0.7)
         setUpControlObject()
         
-        resetAndBeginGame()
+        self.finger = gameUtils.drawFinger()
+        self.finger.name = "finger"
+        self.finger.position = CGPointMake(CGRectGetMidX(self.scene!.frame), yValues[4]!)
+        self.addChild(finger)
+        
+        var left = SKAction.moveByX(-100, y: 0, duration: 0.5)
+        var right = SKAction.moveByX(+200, y: 0, duration: 1)
+        self.finger.runAction(fadeIn)
+        self.finger.runAction(SKAction.repeatActionForever(SKAction.sequence([left,right,left])))
+        
     }
+    
     
     func resetAndBeginGame(){
         
@@ -165,13 +173,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func initiateRain() -> Void {
         var wait : SKAction!
-        if(!instructionsDone && showInstructions){
-            instructionsDone = true
-            showAvoidInstruction()
-            wait = SKAction.waitForDuration(4)
-        }else{
-            wait = SKAction.waitForDuration(1)
-        }
+
+        wait = SKAction.waitForDuration(1)
 
         var start = SKAction.runBlock({
             self.mainLoop(self.dropGenerationInterval)
@@ -181,33 +184,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.runAction(waitAndStart)
     }
     
-    func showAvoidInstruction() -> Void {
-        var avoid = SKSpriteNode(imageNamed: "avoidInstruction")
-        avoid.name = "avoid"
-        avoid.position = CGPointMake(CGRectGetMidX(self.scene!.frame), CGRectGetMidY(self.scene!.frame) + 150)
-        avoid.alpha = 0.0
-        self.addChild(avoid)
-        var fadeIn = SKAction.fadeInWithDuration(0.5)
-        var wait = SKAction.waitForDuration(2)
-        var fadeOut = SKAction.runBlock({
-            self.gameUtils.fadeOutAndKillWithDuration(avoid, duration: 0.2)
-        })
         
-        var collectThese = SKSpriteNode(imageNamed: "collectThese")
-        collectThese.name = "collect"
-        collectThese.position = CGPointMake(CGRectGetMidX(self.scene!.frame), CGRectGetMidY(self.scene!.frame) + 150)
-        collectThese.alpha = 0.0
-        self.addChild(collectThese)
-        var fadeOutCollect = SKAction.runBlock({
-            self.gameUtils.fadeOutAndKillWithDuration(collectThese, duration: 0.2)
-        })
-        
-        
-        avoid.runAction(SKAction.sequence([fadeIn, wait, fadeOut]), completion: { () -> Void in
-            collectThese.runAction(SKAction.sequence([fadeIn, wait, fadeOutCollect]))
-        })
-    }
-    
     func setUpControlObject() -> Void {
 
         self.controlCircle = gameUtils.drawControlObject()
@@ -226,34 +203,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlCircle.name = "controlObj"
 
     }
-    
-    func playInstructions() -> Void {
-        self.instructionText = gameUtils.drawInstructions()
-        self.instructionText.name = "instructions"
-        self.instructionText.position = CGPointMake(self.frame.midX, self.frame.midY + 150)
-        self.addChild(instructionText)
-        var fadeIn = SKAction.fadeInWithDuration(0.7)
-        instructionText.runAction(fadeIn)
         
-        setUpControlObject()
-        
-        self.finger = gameUtils.drawFinger()
-        self.finger.name = "finger"
-        self.finger.position = CGPointMake(CGRectGetMidX(self.scene!.frame), CGRectGetMidY(self.scene!.frame) - 150)
-        self.addChild(finger)
-
-        var left = SKAction.moveByX(-100, y: 0, duration: 0.5)
-        var right = SKAction.moveByX(+200, y: 0, duration: 1)
-        self.finger.runAction(fadeIn)
-        self.finger.runAction(SKAction.repeatActionForever(SKAction.sequence([left,right,left])))
-        
-    }
-    
-    func removeInstructions() -> Void {
-        gameUtils.fadeOutAndKillWithDuration(self.instructionText, duration: 0.2)
-        gameUtils.fadeOutAndKillWithDuration(self.finger, duration: 0.2)
-        resetAndBeginGame()
-    }
     
     func spawnDiamond(lifeSpan: Double) -> Void {
         var diamond = gameUtils.createDiamond()
@@ -556,9 +506,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             controlCircle.position.y = newPos.y
         }
         
-        if(!instructionsDone){
-            removeInstructions()
+        if(!initialMovement){
+            initialMovement = true
+            gameUtils.fadeOutAndKill(self.finger)
+            resetAndBeginGame()
         }
+        
+
     }
     
     /*
@@ -629,7 +583,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.scoreLabel.text = String(format:"%d", self.score)
         
         if (self.lastSpawnTimeInterval > 1) {
-            if(!instructionsDone || !gameBegan || gameEnded){
+            if(!gameBegan || gameEnded){
                 return
             }
             

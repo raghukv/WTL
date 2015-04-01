@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
     
-    var scoreManager = ScoreManager()
+    var scoreManager = DataManager()
     
     // less value higher frequency
     var dropGenerationInterval : Double = 1.0
@@ -495,8 +495,7 @@ class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
         self.addChild(menuButton)
         menuButton.runAction(fadeInLabel)
         
-        scoreManager.addNewScore(self.score)
-        scoreManager.save()
+        scoreManager.addNewScoreAndSave(self.score)
     }
 
     func fadeAndKillNode(drop: SKNode) -> Void {
