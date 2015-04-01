@@ -17,6 +17,7 @@ class TryAgainScene : SKScene {
     var utils : GameUtils = GameUtils()
     var scoreMan : DataManager = DataManager()
     var score = 0
+    var checkPoint = 0;
     var yValues : Dictionary<Int, CGFloat> = Dictionary<Int, CGFloat>();
     
     override func didMoveToView(view: SKView) {
@@ -44,7 +45,7 @@ class TryAgainScene : SKScene {
         menuLabel.fontColor = GameUtils.getDarkColor()
         menuLabel.position = CGPointMake(self.frame.midX, yValues[4]!)
         self.addChild(menuLabel)
-        scoreMan.addNewScoreAndSave(score)
+        scoreMan.addNewScoreAndSave(score, checkPoint: checkPoint)
     }
     
     override func touchesBegan (touches: NSSet, withEvent event: UIEvent)

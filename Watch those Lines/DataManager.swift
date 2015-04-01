@@ -83,8 +83,8 @@ class DataManager {
     
     // a simple function to add a new high score, to be called from your game logic
     // note that this doesn't sort or filter the scores in any way
-    func addNewScoreAndSave(newScore:Int) {
-        let newHighScore = BestScore(score: newScore);
+    func addNewScoreAndSave(newScore:Int, checkPoint: Int) {
+        let newHighScore = BestScore(score: newScore, checkPoint: checkPoint);
         self.scores.append(newHighScore);
         self.saveScore();
     }

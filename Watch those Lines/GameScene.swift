@@ -74,6 +74,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     /* Score bro! */
     var score = 0
+    var checkPoint = 0
     
     /* Label node that displays the score*/
     var scoreLabel: SKLabelNode = SKLabelNode(text: "0")
