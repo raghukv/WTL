@@ -10,8 +10,8 @@ import Foundation
 
 // inherit from NSCoding to make instances serializable
 class BestScore: NSObject, NSCoding {
-    let score:Int;
-    let checkPoint:Int;
+    let score : Int = 0;
+    let checkPoint : Int = 0;
     
     init(score:Int, checkPoint: Int) {
         self.score = score;
@@ -19,8 +19,15 @@ class BestScore: NSObject, NSCoding {
     }
     
     required init(coder: NSCoder) {
-        self.score = coder.decodeObjectForKey("score")! as Int;
-        self.checkPoint = coder.decodeObjectForKey("checkPoint") as Int;
+        if let rasikesh = coder.decodeObjectForKey("score")? as? Int {
+            self.score = rasikesh
+        }
+//        self.score = coder.decodeObjectForKey("score")? as Int;
+        if let rasik = coder.decodeObjectForKey("checkPoint")? as? Int {
+            self.checkPoint = rasik
+        }
+        
+ //       self.checkPoint = coder.decodeObjectForKey("checkPoint")! as Int;
         super.init()
     }
     

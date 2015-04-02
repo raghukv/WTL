@@ -19,7 +19,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var finger = SKSpriteNode();
     var initialMovement = false;
     
-/*
+    /*
     PROPERTIES THAT DETERMINE DIFFICULTY OF THE GAME
     
     dropGenerationInterval - The time between generation of each drop
@@ -27,7 +27,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     diamondLifeSpan        - The amount of time a diamond is available to collect
     dropFallDuration       - The time taken by the drop to reach the ground
     waterLevelDangerous    - Boolean to denote if the water level is too high
-*/
+    */
     var dropGenerationInterval : Double = 1.0
     var horizontalDropInterval: Double = 5.0
     var dropFallDuration : Double = 6.0
@@ -35,30 +35,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var waterLevelDangerous : Bool = false;
     
     
-/*
+    /*
     PROPERTIES THAT CONTROL THE FLOW OF THE GAME
     
     gameBegan - Boolean that says if the game has begun
     gameEnded - Boolean that says if the game has ended
     instructionsDone - Boolean that says if the instructions have been completed
     showInstructions - Boolean that determines whether instructions must be shown
-*/
+    */
     var gameBegan : Bool = false;
     var gameEnded : Bool = false;
-
-/*
+    
+    /*
     TIME CONTROL PARAMETERS
     To ensure updating the game at the required intervals
-*/
+    */
     var totalElapsedTime : CFTimeInterval = 0
     var lastUpdateTimeInterval: CFTimeInterval = 0;
     var lastSpawnTimeInterval: CFTimeInterval = 0;
-
     
-/*
+    
+    /*
     PHYSICS BODY CATEGORIES
     A category is given to a node to detect collision
-*/
+    */
     var mainCategory : UInt32 = 0x1 << 0
     var dropCategory: UInt32 = 0x1 << 1
     var boundaryCategory: UInt32 = 0x1 << 2
@@ -91,12 +91,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMoveToView(view: SKView) {
         
         yValues = PositionUtils.getYvalues(self.frame)
-
+        
         self.physicsWorld.contactDelegate = self
         self.physicsWorld.gravity = CGVectorMake(0, 0.0)
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         self.physicsBody?.categoryBitMask = boundaryCategory
-
+        
         playInstructions()
         
     }
@@ -142,7 +142,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func setUpLabel() -> Void {
-
+        
         var x = CGRectGetMidX(self.frame)
         var y = self.frame.height - 25
         
@@ -174,9 +174,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func initiateRain() -> Void {
         var wait : SKAction!
-
+        
         wait = SKAction.waitForDuration(1)
-
+        
         var start = SKAction.runBlock({
             self.mainLoop(self.dropGenerationInterval)
             self.gameBegan = true
@@ -185,9 +185,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.runAction(waitAndStart)
     }
     
-        
+    
     func setUpControlObject() -> Void {
-
+        
         self.controlCircle = gameUtils.drawControlObject()
         controlCircle.position = CGPointMake(CGRectGetMidX(self.scene!.frame), CGRectGetMidY(self.scene!.frame
             ))
@@ -202,9 +202,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlCircle.physicsBody?.collisionBitMask = dropCategory | waterCategory
         
         controlCircle.name = "controlObj"
-
-    }
         
+    }
+    
     
     func spawnDiamond(lifeSpan: Double) -> Void {
         var diamond = gameUtils.createDiamond()
@@ -221,7 +221,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         var maxY = Int(self.frame.height - 100)
         var minY = Int(waterUpperPosition + 200)
-
+        
         var yValue : CGFloat!
         if maxY > minY{
             yValue = CGFloat(gameUtils.randRange(minY, upper: maxY))
@@ -232,7 +232,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         diamond.position = CGPointMake(xValue, yValue)
         
         self.addChild(diamond)
-
+        
         var fadeIn = SKAction.fadeInWithDuration(0.25)
         var wait = SKAction.waitForDuration(lifeSpan)
         var fadeOut = SKAction.fadeOutWithDuration(0.25)
@@ -243,7 +243,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var seq = SKAction.sequence([fadeIn, wait, fadeOut, kill])
         
         diamond.runAction(seq)
-
+        
     }
     
     func setUpWater()-> Void {
@@ -266,7 +266,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         var waitAndMoveUp = SKAction.sequence([wait2, moveWaterLevelUp])
         self.water.runAction(waitAndMoveUp, withKey: "moveWaterUp");
-
+        
     }
     
     func horizontalRainDrops(direction: Int) -> Void{
@@ -310,7 +310,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var dropFadeOut = SKAction.fadeAlphaTo(0.0, duration: (dropFallDuration-1)/2)
         var fadeInFadeOut = SKAction.sequence([dropFadeIN, dropFadeOut])
         var passWithFadeInFadeOut = SKAction.group([passThrough, fadeInFadeOut])
-
+        
         var kill = SKAction.runBlock({
             drop.removeFromParent()
         })
@@ -380,8 +380,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     /*  This method is called with updated difficulty parameters.
-        Waiting period between drops is an action. Generating Drops is another action.
-        Both are put in a sequence and run forever until game ends.
+    Waiting period between drops is an action. Generating Drops is another action.
+    Both are put in a sequence and run forever until game ends.
     */
     func mainLoop(interval: Double) -> Void{
         
@@ -397,13 +397,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         })
         gameLoop = SKAction.repeatActionForever(SKAction.sequence([wait, drop]))
         
-        //run with action identifier key. This key is used to cancel the action and 
+        //run with action identifier key. This key is used to cancel the action and
         // re-run with updated difficulty parameters
         self.runAction(gameLoop, withKey: "gameLoop")
     }
-
+    
     func didBeginContact(contact: SKPhysicsContact) -> Void{
-
+        
         var firstBody : SKNode = contact.bodyA.node!
         var secondBody : SKNode = contact.bodyB.node!
         
@@ -420,10 +420,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.flashWithDuration(0.1, node: secondBody)
             var wait = SKAction.waitForDuration(0.5)
             self.runAction(wait, completion: {Void in
-                    self.endTheGame()
+                self.endTheGame()
             })
         }
-        
+            
         else if (collectibleCondition(firstBody, secondBody: secondBody))
         {
             if(firstBody.physicsBody?.categoryBitMask == collectibleCategory){
@@ -475,17 +475,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         tryScene.size = skView.bounds.size
         tryScene.scaleMode = SKSceneScaleMode.AspectFill
         self.scene!.view!.presentScene(tryScene, transition: transition)
-
+        
     }
-
+    
     func fadeAndKillNode(drop: SKNode) -> Void {
-         gameUtils.fadeOutAndKill(drop)
+        gameUtils.fadeOutAndKill(drop)
     }
     
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent)
     {
         if gameEnded {
-         return
+            return
         }
         
         //Get touch coordinates in location view
@@ -501,7 +501,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var checkPosTwo = CGPointMake(newX + controlCircle.frame.width/2, newY)
         
         if(self.frame.contains(checkPos) && self.frame.contains(checkPosTwo)){
-//        if(self.frame.contains(newPos)){
+            //        if(self.frame.contains(newPos)){
             controlCircle.position = newPos
         }else{
             controlCircle.position.y = newPos.y
@@ -513,37 +513,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             resetAndBeginGame()
         }
         
-
+        
     }
     
     /*
     override func touchesBegan (touches: NSSet, withEvent event: UIEvent)
     {
-        //Get touch coordinates in location view
-        var touch : UITouch = touches.anyObject() as UITouch
-        var touchPoint : CGPoint = touch.locationInNode(self)
-        var node = self.nodeAtPoint(touchPoint) as SKNode
-        var nodeName = node.name
-        var tryAgain = "tryAgain"
-        var menu = "menu"
-        if(nodeName == tryAgain && !disableTryAgain){
-            
-            gameUtils.fadeOutAndKill(node)
-            gameUtils.fadeOutAndKill(self.menuButton)
-            self.tryAgain()
-        }
-        else if (nodeName == menu){
-            
-            var scene = MenuScene()
-            var trans = SKTransition.doorsCloseVerticalWithDuration(0.5)
-            var skView = self.view as SKView!
-            scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
-            scene.size = skView.bounds.size
-            scene.scaleMode = SKSceneScaleMode.AspectFill
-            self.scene!.view!.presentScene(scene, transition: trans)
-        }
+    //Get touch coordinates in location view
+    var touch : UITouch = touches.anyObject() as UITouch
+    var touchPoint : CGPoint = touch.locationInNode(self)
+    var node = self.nodeAtPoint(touchPoint) as SKNode
+    var nodeName = node.name
+    var tryAgain = "tryAgain"
+    var menu = "menu"
+    if(nodeName == tryAgain && !disableTryAgain){
+    
+    gameUtils.fadeOutAndKill(node)
+    gameUtils.fadeOutAndKill(self.menuButton)
+    self.tryAgain()
     }
-*/
+    else if (nodeName == menu){
+    
+    var scene = MenuScene()
+    var trans = SKTransition.doorsCloseVerticalWithDuration(0.5)
+    var skView = self.view as SKView!
+    scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+    scene.size = skView.bounds.size
+    scene.scaleMode = SKSceneScaleMode.AspectFill
+    self.scene!.view!.presentScene(scene, transition: trans)
+    }
+    }
+    */
     
     override func update(currentTime: CFTimeInterval) {
         
@@ -576,7 +576,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     dropSpeed              - the speed with which the drop falls (really the duration of fall)
     
     waterLevelDangerous    - if water climbs more than 2/3rds of the screen, this becomes true
-                             We spawn diamonds more frequently to help the player recoupe.
+    We spawn diamonds more frequently to help the player recoupe.
     
     */
     func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval) -> Void{
@@ -601,11 +601,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             /*
             Until 140 seconds, the frequency of drops increases every 7 seconds
             */
-            if(self.score > 1 && self.score <= 140 && self.score % 7 == 0){
+            if(self.score > 1 && self.score <= 140 && self.score % 6 == 0){
                 // every 7 seconds for 20 times
                 self.dropGenerationInterval -= 0.030
                 //action called with new frequency value
                 mainLoop(self.dropGenerationInterval)
+            }
+            
+            if(self.score > 1 && self.score <= 64 && self.score % 6 == 0){
+                self.dropFallDuration -= 0.150
             }
             
             /*
@@ -628,9 +632,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 horizontalRainDrops(2)
             }
             
-            if(self.score > 1 && self.score <= 64 && self.score % 8 == 0){
-                self.dropFallDuration -= 0.150
-            }
+            
             
             
             /*
@@ -654,8 +656,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             /*
             If waterLevelDangerous, spawn more diamonds, else remain same
-*/
-            if(waterLevelDangerous && self.score > 14 && self.score % 2 == 0){
+            */
+            if(waterLevelDangerous && self.score > 15 && self.score % 2 == 0){
                 spawnDiamond(self.diamondLifeSpan)
             }
             

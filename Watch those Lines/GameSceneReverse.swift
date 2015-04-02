@@ -495,7 +495,7 @@ class GameSceneReverse: SKScene, SKPhysicsContactDelegate {
         self.addChild(menuButton)
         menuButton.runAction(fadeInLabel)
         
-        scoreManager.addNewScoreAndSave(self.score)
+//        scoreManager.addNewScoreAndSave(self.score, )
     }
 
     func fadeAndKillNode(drop: SKNode) -> Void {

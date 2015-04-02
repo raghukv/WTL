@@ -22,6 +22,7 @@ class MenuScene : SKScene {
     var scoreLabel : SKLabelNode = SKLabelNode(text: "best score empty");
     var previousHighest : Int = 0
     var highScore : Int = 0
+    var checkPoint : Int = 0
     
     var reverse : SKLabelNode = SKLabelNode()
     
@@ -35,7 +36,7 @@ class MenuScene : SKScene {
         loadHighScore()
 
         doLoadAnimation()
-        
+        println(checkPoint)
     }
     
     func loadHighScore() -> Int{
@@ -44,6 +45,7 @@ class MenuScene : SKScene {
             for scoreObject in self.scores{
                 if (scoreObject.score > highScore) {
                     highScore = scoreObject.score
+                    checkPoint = scoreObject.checkPoint
                 }
             }
             self.scoreLabel.text = "best score " + String(format:"%d", self.highScore)
