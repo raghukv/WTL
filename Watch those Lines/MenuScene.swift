@@ -20,8 +20,8 @@ class MenuScene : SKScene {
     var instructions : SKLabelNode = SKLabelNode();
     var playButton : SKLabelNode = SKLabelNode()
     var scoreLabel : SKLabelNode = SKLabelNode(text: "best score empty");
-    var previousHighest : Int = 0
-    var highScore : Int = 0
+    var previousHighest : Double = 0.0
+    var highScore : Double = 0.0
     var checkPoint : Int = 0
     
     var reverse : SKLabelNode = SKLabelNode()
@@ -29,17 +29,13 @@ class MenuScene : SKScene {
     var yValues : Dictionary<Int, CGFloat> = Dictionary<Int, CGFloat>();
     
     override func didMoveToView(view: SKView) {
-        
         self.yValues = PositionUtils.getYvalues(self.frame)
-        
         self.center = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
         loadHighScore()
-
         doLoadAnimation()
-        println(checkPoint)
     }
     
-    func loadHighScore() -> Int{
+    func loadHighScore() -> Double{
         scores = scoreManager.scores
         if(scores.count != 0){
             for scoreObject in self.scores{
@@ -48,7 +44,7 @@ class MenuScene : SKScene {
                     checkPoint = scoreObject.checkPoint
                 }
             }
-            self.scoreLabel.text = "best score " + String(format:"%d", self.highScore)
+            self.scoreLabel.text = "best score " + CheckPointHelper.getFormattedScore(highScore)
             self.previousHighest = self.highScore
             
         }

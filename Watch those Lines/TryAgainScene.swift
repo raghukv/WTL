@@ -16,7 +16,7 @@ class TryAgainScene : SKScene {
     var labelScore : SKLabelNode = SKLabelNode()
     var utils : GameUtils = GameUtils()
     var scoreMan : DataManager = DataManager()
-    var score = 0
+    var score : Double = 0.0
     var checkPoint = 0;
     var yValues : Dictionary<Int, CGFloat> = Dictionary<Int, CGFloat>();
     
@@ -24,8 +24,7 @@ class TryAgainScene : SKScene {
         
         yValues = PositionUtils.getYvalues(self.frame)
         
-        var scoreString = "score " + String(score)
-        
+        var scoreString = "score  " + CheckPointHelper.getFormattedScore(self.score)
         labelScore = GameUtils.getLabelNodeWithText(scoreString, name: "scoreLabel")
         labelScore.alpha = 1.0
         labelScore.fontSize = 40

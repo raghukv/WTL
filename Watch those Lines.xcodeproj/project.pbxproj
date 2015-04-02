@@ -11,7 +11,7 @@
 		5D64AD111ACB06B900AC1946 /* InstructionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D64AD101ACB06B900AC1946 /* InstructionScene.swift */; };
 		5D64AD131ACB6B8300AC1946 /* UserPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D64AD121ACB6B8300AC1946 /* UserPreferences.swift */; };
 		5D64AD151ACBB25600AC1946 /* PositionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D64AD141ACBB25600AC1946 /* PositionUtils.swift */; };
-		5D64AD191ACC50B100AC1946 /* CheckPointDifficultyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D64AD181ACC50B100AC1946 /* CheckPointDifficultyHelper.swift */; };
+		5D64AD191ACC50B100AC1946 /* CheckPointHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D64AD181ACC50B100AC1946 /* CheckPointHelper.swift */; };
 		5DE6CADD1AC10F39006FD79E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAC91AC10F39006FD79E /* AppDelegate.swift */; };
 		5DE6CADF1AC10F39006FD79E /* BestScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CACB1AC10F39006FD79E /* BestScore.swift */; };
 		5DE6CAE41AC10F39006FD79E /* GameUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE6CAD01AC10F39006FD79E /* GameUtils.swift */; };
@@ -32,7 +32,7 @@
 		5D64AD101ACB06B900AC1946 /* InstructionScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InstructionScene.swift; path = "Watch those Lines/InstructionScene.swift"; sourceTree = "<group>"; };
 		5D64AD121ACB6B8300AC1946 /* UserPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserPreferences.swift; path = "Watch those Lines/UserPreferences.swift"; sourceTree = "<group>"; };
 		5D64AD141ACBB25600AC1946 /* PositionUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PositionUtils.swift; path = "Watch those Lines/PositionUtils.swift"; sourceTree = "<group>"; };
-		5D64AD181ACC50B100AC1946 /* CheckPointDifficultyHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckPointDifficultyHelper.swift; path = "Watch those Lines/CheckPointDifficultyHelper.swift"; sourceTree = "<group>"; };
+		5D64AD181ACC50B100AC1946 /* CheckPointHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckPointHelper.swift; path = "Watch those Lines/CheckPointHelper.swift"; sourceTree = "<group>"; };
 		5DE6CAC71AC10F36006FD79E /* Watch those Lines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Watch those Lines.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DE6CAC91AC10F39006FD79E /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "Watch those Lines/AppDelegate.swift"; sourceTree = "<group>"; };
 		5DE6CACB1AC10F39006FD79E /* BestScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BestScore.swift; path = "Watch those Lines/BestScore.swift"; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 		5D64AD171ACBBA3D00AC1946 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				5D64AD181ACC50B100AC1946 /* CheckPointDifficultyHelper.swift */,
+				5D64AD181ACC50B100AC1946 /* CheckPointHelper.swift */,
 				5D64AD141ACBB25600AC1946 /* PositionUtils.swift */,
 				5DE6CAD01AC10F39006FD79E /* GameUtils.swift */,
 			);
@@ -220,7 +220,7 @@
 				5DE6CAE61AC10F39006FD79E /* GameViewController.swift in Sources */,
 				5DE6CADD1AC10F39006FD79E /* AppDelegate.swift in Sources */,
 				5D1251131ACCE5FA00ACBD0E /* GameScene.swift in Sources */,
-				5D64AD191ACC50B100AC1946 /* CheckPointDifficultyHelper.swift in Sources */,
+				5D64AD191ACC50B100AC1946 /* CheckPointHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,11 +20,11 @@ class MenuViewController : UIViewController {
     
     var scores:Array<BestScore> = [];
     
-    var highScore : Int = 0
+    var highScore : Double = 0.0
     
     var firstTime: Bool = true
     
-    var previousHighest = 0
+    var previousHighest = 0.0
     
     override func viewDidLoad() {
         loadHighScore()
@@ -68,7 +68,7 @@ class MenuViewController : UIViewController {
     }
 
 
-    func loadHighScore() -> Int{
+    func loadHighScore() -> Double{
         scores = scoreManager.scores
         if(scores.count != 0){
             for scoreObject in self.scores{

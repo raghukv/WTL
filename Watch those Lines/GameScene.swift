@@ -73,7 +73,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var water = SKShapeNode()
     
     /* Score bro! */
-    var score = 0
+    var score : Double = 0.0
     var checkPoint = 0
     
     /* Label node that displays the score*/
@@ -97,11 +97,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         self.physicsBody?.categoryBitMask = boundaryCategory
         
-        playInstructions()
+        playBeginMovement()
         
     }
     
-    func playInstructions() -> Void {
+    func playBeginMovement() -> Void {
         
         var fadeIn = SKAction.fadeInWithDuration(0.7)
         setUpControlObject()
@@ -146,30 +146,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var x = CGRectGetMidX(self.frame)
         var y = self.frame.height - 25
         
-        var list = self.children
-        var labelFound = false
-        for item in list {
-            if(item.name? == "scoreLabel"){
-                labelFound = true
-                var theItem = item as SKLabelNode
-                theItem.runAction(SKAction.fadeAlphaTo(0.2, duration: 1))
-                theItem.runAction(SKAction.moveTo(CGPointMake(x, y), duration: 1))
-                theItem.text = "0"
-            }
-        }
-        if !labelFound {
-            self.scoreLabel = SKLabelNode(fontNamed: "Heiti TC Light")
-            
-            scoreLabel.text = String(format: "%d", self.score)
-            scoreLabel.name = "scoreLabel"
-            scoreLabel.fontColor = UIColor(red: 60/255, green: 96/255, blue: 127/255, alpha: 1.0)
-            scoreLabel.fontSize = 26
-            scoreLabel.alpha = 0.2
-            
-            
-            scoreLabel.position = CGPointMake(x, y)
-            self.addChild(scoreLabel)
-        }
+        self.scoreLabel = SKLabelNode(fontNamed: "Heiti TC Light")
+        
+        
+        scoreLabel.text = CheckPointHelper.getFormattedScore(self.score)
+        scoreLabel.name = "scoreLabel"
+        scoreLabel.fontColor = UIColor(red: 60/255, green: 96/255, blue: 127/255, alpha: 1.0)
+        scoreLabel.fontSize = 26
+        scoreLabel.alpha = 0.2
+        scoreLabel.position = CGPointMake(x, y)
+        self.addChild(scoreLabel)
     }
     
     func initiateRain() -> Void {
@@ -516,35 +502,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    /*
-    override func touchesBegan (touches: NSSet, withEvent event: UIEvent)
-    {
-    //Get touch coordinates in location view
-    var touch : UITouch = touches.anyObject() as UITouch
-    var touchPoint : CGPoint = touch.locationInNode(self)
-    var node = self.nodeAtPoint(touchPoint) as SKNode
-    var nodeName = node.name
-    var tryAgain = "tryAgain"
-    var menu = "menu"
-    if(nodeName == tryAgain && !disableTryAgain){
-    
-    gameUtils.fadeOutAndKill(node)
-    gameUtils.fadeOutAndKill(self.menuButton)
-    self.tryAgain()
-    }
-    else if (nodeName == menu){
-    
-    var scene = MenuScene()
-    var trans = SKTransition.doorsCloseVerticalWithDuration(0.5)
-    var skView = self.view as SKView!
-    scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
-    scene.size = skView.bounds.size
-    scene.scaleMode = SKSceneScaleMode.AspectFill
-    self.scene!.view!.presentScene(scene, transition: trans)
-    }
-    }
-    */
-    
     override func update(currentTime: CFTimeInterval) {
         
         /* Called before each frame is rendered */
@@ -563,7 +520,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             timeSinceLast = 1.0 / 60.0;
             self.lastUpdateTimeInterval = currentTime;
         }
+        
+        if(gameBegan || !gameEnded){
+            score += 1/60
+            self.scoreLabel.text = CheckPointHelper.getFormattedScore(self.score)
+        }
+        
         self.updateWithTimeSinceLastUpdate(timeSinceLast)
+        
+
     }
     
     /*
@@ -581,7 +546,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     */
     func updateWithTimeSinceLastUpdate(timeSinceLast: CFTimeInterval) -> Void{
         self.lastSpawnTimeInterval = self.lastSpawnTimeInterval + timeSinceLast;
-        self.scoreLabel.text = String(format:"%d", self.score)
         
         if (self.lastSpawnTimeInterval > 1) {
             if(!gameBegan || gameEnded){
@@ -590,7 +554,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             self.lastSpawnTimeInterval = 0;
             self.totalElapsedTime += 1
-            self.score += 1
+            var modScore = Int(floor(self.score))
+            
+//            self.scoreLabel.text = CheckPointHelper.getFormattedScore(self.score)
             
             if((water.position.y + (water.frame.height/1.3)) > CGRectGetMidY(self.frame)){
                 waterLevelDangerous = true;
@@ -598,17 +564,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 waterLevelDangerous = false;
             }
             
+            if(self.score > 1 && self.score % 30 == 0){
+                println("score \(self.score)")
+                println("dropGenInterval \(self.dropGenerationInterval)")
+                println("dropFallDuraion \(self.dropFallDuration)")
+                
+            }
+            
             /*
             Until 140 seconds, the frequency of drops increases every 7 seconds
             */
-            if(self.score > 1 && self.score <= 140 && self.score % 6 == 0){
+            if(self.score > 1 && self.score <= 150 && modScore % 6 == 0){
                 // every 7 seconds for 20 times
                 self.dropGenerationInterval -= 0.030
                 //action called with new frequency value
                 mainLoop(self.dropGenerationInterval)
             }
             
-            if(self.score > 1 && self.score <= 64 && self.score % 6 == 0){
+            if(self.score > 1 && self.score <= 60 && modScore % 6 == 0){
                 self.dropFallDuration -= 0.150
             }
             
@@ -617,39 +590,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             After 120 seconds, they are generated every 1 and 2 seconds.
             The method parameter for horizontalRainDrops is the direction (from left or right)
             */
-            if(self.score > 20 && self.score < 120 && self.score % 3 == 0){
+            if(self.score > 20 && self.score <= 120 && modScore % 3 == 0){
                 horizontalRainDrops(1)
             }
-            if(self.score > 21 && self.score < 120 && self.score % 5 == 0){
+            if(self.score > 21 && self.score < 120 && modScore % 5 == 0){
                 horizontalRainDrops(2)
             }
             
-            if(self.score > 120 && self.score % 1 == 0){
+            if(self.score > 120 && modScore % 1 == 0){
                 horizontalRainDrops(1)
             }
             
-            if(self.score > 120 && self.score % 2 == 0){
+            if(self.score > 120 && modScore % 2 == 0){
                 horizontalRainDrops(2)
             }
-            
-            
-            
-            
             /*
             After 60 seconds, the lifespan of the diamond decreases.
             Further decreases after 120 seconds.
             */
-            if(score == 60){
+            if(modScore == 60){
                 self.diamondLifeSpan -= 0.3
             }
-            if(score == 120){
+            if(modScore == 120){
                 self.diamondLifeSpan -= 0.3
             }
             
             /*
             Begin movement of water after 14 seconds
             */
-            if(self.score == 14){
+            if(modScore == 14){
                 moveWaterUp()
             }
             
@@ -657,11 +626,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             /*
             If waterLevelDangerous, spawn more diamonds, else remain same
             */
-            if(waterLevelDangerous && self.score > 15 && self.score % 2 == 0){
+            if(waterLevelDangerous && self.score > 15 && modScore % 2 == 0){
                 spawnDiamond(self.diamondLifeSpan)
             }
             
-            if(self.score > 14 && self.score % 5 == 0 && !waterLevelDangerous){
+            if(self.score > 14 && modScore % 5 == 0 && !waterLevelDangerous){
                 spawnDiamond(self.diamondLifeSpan)
             }
         }
