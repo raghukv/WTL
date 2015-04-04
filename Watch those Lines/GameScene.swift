@@ -131,6 +131,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         dropFallDuration = 4.0
         
+        injectCheckPointDifficultyAndScores()
+        
         gameEnded = false;
         
         setUpWater()
@@ -139,6 +141,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         setUpLabel()
         
+    }
+    
+    func injectCheckPointDifficultyAndScores() -> Void {
+        (self.dropGenerationInterval, self.dropFallDuration) = CheckPointHelper.getDifficultyForCheckPoint(self.checkPoint)
+        
+        self.score = CheckPointHelper.baseScoreForCheckPoint(self.checkPoint)
     }
     
     func setUpLabel() -> Void {
@@ -457,6 +465,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var skView = self.view as SKView!
         var tryScene : TryAgainScene = TryAgainScene()
         tryScene.score = self.score
+        tryScene.checkPoint = self.checkPoint
         tryScene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
         tryScene.size = skView.bounds.size
         tryScene.scaleMode = SKSceneScaleMode.AspectFill
@@ -564,11 +573,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 waterLevelDangerous = false;
             }
             
-            if(self.score > 1 && self.score % 30 == 0){
+            if(self.score > 1 && self.score % 30 == 0)
+            {
                 println("score \(self.score)")
                 println("dropGenInterval \(self.dropGenerationInterval)")
                 println("dropFallDuraion \(self.dropFallDuration)")
-                
             }
             
             /*

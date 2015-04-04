@@ -21,8 +21,8 @@ class CheckPointHelper {
         return checkPoint
     }
     
-    class func baseScoreForCheckPoint(checkPoint: Int) -> Int{
-        return checkPoint * 30
+    class func baseScoreForCheckPoint(checkPoint: Int) -> Double{
+        return Double(checkPoint * 30)
     }
     
     class func getDifficultyForCheckPoint(checkPoint: Int) -> (dropGenInt : Double, dropFallDur : Double){

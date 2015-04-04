@@ -42,9 +42,12 @@ class MenuScene : SKScene {
                 if (scoreObject.score > highScore) {
                     highScore = scoreObject.score
                     checkPoint = scoreObject.checkPoint
+                    println("\(scoreObject.score) | \(scoreObject.checkPoint)")
+
                 }
             }
             self.scoreLabel.text = "best score " + CheckPointHelper.getFormattedScore(highScore)
+            self.checkPoint = CheckPointHelper.checkPointForScore(self.highScore)
             self.previousHighest = self.highScore
             
         }
@@ -95,16 +98,23 @@ class MenuScene : SKScene {
         if(node.name == "playButton"){
             var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
             var skView = self.view as SKView!
-            var scene : SKScene!
+        
             if(scoreManager.userPrefs.userTookInstructions){
-                scene = GameScene()
+                var scene = GameScene()
+                scene.checkPoint = self.checkPoint
+                scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+                scene.size = skView.bounds.size
+                scene.scaleMode = SKSceneScaleMode.AspectFill
+                self.scene!.view!.presentScene(scene, transition: trans)
             }else{
-                scene = InstructionScene()
+
+                var scene = InstructionScene()
+                scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+                scene.size = skView.bounds.size
+                scene.scaleMode = SKSceneScaleMode.AspectFill
+                self.scene!.view!.presentScene(scene, transition: trans)
             }
-            scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
-            scene.size = skView.bounds.size
-            scene.scaleMode = SKSceneScaleMode.AspectFill
-            self.scene!.view!.presentScene(scene, transition: trans)
+            
             
         }else if (node.name == "playUp"){
             var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
