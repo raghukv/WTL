@@ -50,6 +50,16 @@ class DataManager {
         }
     }
     
+    func getHighestScore() -> Double {
+        var highScore = 0.0
+        for scoreObject in self.scores {
+            if(scoreObject.score > highScore){
+                highScore = scoreObject.score
+            }
+        }
+        return highScore
+    }
+    
     func loadUserPrefs(userPrefPath: String, fileManager : NSFileManager){
         if !fileManager.fileExistsAtPath(userPrefPath){
             if let bundle = NSBundle.mainBundle().pathForResource("DefaultFile", ofType: "plist"){
@@ -84,8 +94,14 @@ class DataManager {
     // a simple function to add a new high score, to be called from your game logic
     // note that this doesn't sort or filter the scores in any way
     func addNewScoreAndSave(newScore:Double, checkPoint: Int) {
-        let newHighScore = BestScore(score: newScore, checkPoint: checkPoint);
-        self.scores.append(newHighScore);
-        self.saveScore();
+        
+        if(newScore > self.getHighestScore()){
+            println("saving score \(newScore) \(checkPoint)")
+            let newHighScore = BestScore(score: newScore, checkPoint: checkPoint);
+            self.scores.append(newHighScore);
+            self.saveScore();
+        }else{
+            println("not saving as it is not highest")
+        }
     }
 }

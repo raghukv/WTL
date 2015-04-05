@@ -87,8 +87,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var yValues : Dictionary<Int, CGFloat> = Dictionary<Int, CGFloat>();
     
-    
+
     override func didMoveToView(view: SKView) {
+        self.score = CheckPointHelper.baseScoreForCheckPoint(checkPoint)
         
         yValues = PositionUtils.getYvalues(self.frame)
         
@@ -98,7 +99,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody?.categoryBitMask = boundaryCategory
         
         playBeginMovement()
-        
+
     }
     
     func playBeginMovement() -> Void {
@@ -121,7 +122,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func resetAndBeginGame(){
         
-        self.score = 0
+//        self.score = 0
         
         self.totalElapsedTime = CFTimeInterval(0)
         
@@ -463,7 +464,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         var transition = SKTransition.doorsCloseHorizontalWithDuration(0.5)
         var skView = self.view as SKView!
-        var tryScene : TryAgainScene = TryAgainScene()
+        var tryScene : TryAgainScene = TryAgainScene(score: self.score, checkPoint: self.checkPoint)
         tryScene.score = self.score
         tryScene.checkPoint = self.checkPoint
         tryScene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
@@ -533,6 +534,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if(gameBegan || !gameEnded){
             score += 1/60
             self.scoreLabel.text = CheckPointHelper.getFormattedScore(self.score)
+            self.checkPoint = CheckPointHelper.checkPointForScore(self.score)
         }
         
         self.updateWithTimeSinceLastUpdate(timeSinceLast)

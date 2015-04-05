@@ -8,15 +8,16 @@
 
 import UIKit
 import SpriteKit
+import Foundation
 
 extension SKNode {
     class func unarchive(file : NSString) -> SKNode? {
-        if let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
+        if var path = NSBundle.mainBundle().pathForResource(file, ofType: "sks") {
             var sceneData = NSData(contentsOfFile: path, options: .DataReadingMappedIfSafe, error: nil)!
             var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
             
             archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
-            let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as MenuScene
+            var scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as MenuScene
             archiver.finishDecoding()
             return scene
         } else {
@@ -26,6 +27,11 @@ extension SKNode {
 }
 
 class GameViewController: UIViewController {
+    
+//    required init(coder aDecoder: NSCoder)
+//    {
+//        super.init(coder: aDecoder)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

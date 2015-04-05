@@ -19,6 +19,7 @@ class MenuScene : SKScene {
     
     var instructions : SKLabelNode = SKLabelNode();
     var playButton : SKLabelNode = SKLabelNode()
+    var playNew : SKLabelNode = SKLabelNode()
     var scoreLabel : SKLabelNode = SKLabelNode(text: "best score empty");
     var previousHighest : Double = 0.0
     var highScore : Double = 0.0
@@ -27,6 +28,8 @@ class MenuScene : SKScene {
     var reverse : SKLabelNode = SKLabelNode()
     
     var yValues : Dictionary<Int, CGFloat> = Dictionary<Int, CGFloat>();
+    
+    var count = 0
     
     override func didMoveToView(view: SKView) {
         self.yValues = PositionUtils.getYvalues(self.frame)
@@ -37,15 +40,16 @@ class MenuScene : SKScene {
     
     func loadHighScore() -> Double{
         scores = scoreManager.scores
+        println("total number scores \(scores.count)")
         if(scores.count != 0){
             for scoreObject in self.scores{
+//                println("\(scoreObject.score) | \(scoreObject.checkPoint)")
                 if (scoreObject.score > highScore) {
                     highScore = scoreObject.score
                     checkPoint = scoreObject.checkPoint
-                    println("\(scoreObject.score) | \(scoreObject.checkPoint)")
-
                 }
             }
+            println("highest \(self.highScore) \(self.checkPoint) ")
             self.scoreLabel.text = "best score " + CheckPointHelper.getFormattedScore(highScore)
             self.checkPoint = CheckPointHelper.checkPointForScore(self.highScore)
             self.previousHighest = self.highScore
@@ -68,63 +72,94 @@ class MenuScene : SKScene {
     }
     
     func initializeMenuButtons() -> Void {
-
-        playButton = GameUtils.getLabelNodeWithText("play", name: "playButton");
-        playButton.name = "playButton"
-        self.addChild(playButton)
-        playButton.position = CGPointMake(center.x, yValues[6]!)
-        playButton.runAction(fadeIn)
         
-        scoreLabel.alpha = 0.0
-        scoreLabel.position = CGPointMake(center.x, yValues[4]!)
-        scoreLabel.fontColor = GameUtils.getBlueColor()
-        scoreLabel.fontName = "Heiti TC Light"
-        self.addChild(scoreLabel)
-        scoreLabel.runAction(fadeIn)
-        
-        
-        instructions = GameUtils.getLabelNodeWithText("instructions", name: "instructions");
-        instructions.name = "instructions"
-        self.addChild(instructions)
-        instructions.fontSize = 33
-        instructions.position = CGPointMake(center.x, yValues[2]!)
-        instructions.runAction(fadeIn)
+        if(scoreManager.userPrefs.userTookInstructions){
+            
+            playNew = GameUtils.getLabelNodeWithText("start afresh", name: "newButton");
+            playNew.name = "newButton"
+            playNew.fontSize = 30
+            self.addChild(playNew)
+            playNew.position = CGPointMake(center.x, yValues[7]!)
+            playNew.runAction(fadeIn)
+            
+            var resumeText = self.checkPoint > 0 ? "resume checkpoint \(self.checkPoint)" :
+                "resume checkpoint"
+            playButton = GameUtils.getLabelNodeWithText(resumeText, name: "playButton");
+            playButton.name = "playButton"
+            self.addChild(playButton)
+            playButton.fontSize = 30
+            playButton.position = CGPointMake(center.x, yValues[5]!)
+            playButton.runAction(fadeIn)
+            
+            scoreLabel.alpha = 0.0
+            scoreLabel.position = CGPointMake(center.x, yValues[3]!)
+            scoreLabel.fontColor = GameUtils.getBlueColor()
+            scoreLabel.fontName = "Heiti TC Light"
+            scoreLabel.fontSize = 30
+            self.addChild(scoreLabel)
+            scoreLabel.runAction(fadeIn)
+            
+            instructions = GameUtils.getLabelNodeWithText("instructions", name: "instructions");
+            instructions.name = "instructions"
+            self.addChild(instructions)
+            instructions.fontSize = 30
+            instructions.position = CGPointMake(center.x, yValues[1]!)
+            instructions.runAction(fadeIn)
+        }
+        else if(!scoreManager.userPrefs.userTookInstructions){
+            playNew = GameUtils.getLabelNodeWithText("start new", name: "newButton");
+            playNew.name = "newButton"
+            self.addChild(playNew)
+            playNew.position = CGPointMake(center.x, yValues[6]!)
+            playNew.runAction(fadeIn)
+            
+            scoreLabel.alpha = 0.0
+            scoreLabel.position = CGPointMake(center.x, yValues[4]!)
+            scoreLabel.fontColor = GameUtils.getBlueColor()
+            scoreLabel.fontName = "Heiti TC Light"
+            self.addChild(scoreLabel)
+            scoreLabel.runAction(fadeIn)
+            
+        }
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         var touch : UITouch = touches.anyObject() as UITouch
         var touchPoint : CGPoint = touch.locationInNode(self)
         var node = self.nodeAtPoint(touchPoint) as SKNode
-        if(node.name == "playButton"){
+        if(node.name == "newButton"){
             var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
             var skView = self.view as SKView!
         
             if(scoreManager.userPrefs.userTookInstructions){
                 var scene = GameScene()
-                scene.checkPoint = self.checkPoint
+                scene.checkPoint = 0
                 scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
                 scene.size = skView.bounds.size
                 scene.scaleMode = SKSceneScaleMode.AspectFill
                 self.scene!.view!.presentScene(scene, transition: trans)
             }else{
-
                 var scene = InstructionScene()
                 scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
                 scene.size = skView.bounds.size
                 scene.scaleMode = SKSceneScaleMode.AspectFill
                 self.scene!.view!.presentScene(scene, transition: trans)
             }
-            
-            
-        }else if (node.name == "playUp"){
+        }
+        else if (node.name == "playButton"){
             var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
             var skView = self.view as SKView!
-            var scene = GameSceneReverse()
-            scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
-            scene.size = skView.bounds.size
-            scene.scaleMode = SKSceneScaleMode.AspectFill
-            self.scene!.view!.presentScene(scene, transition: trans)
-        }else if (node.name == "instructions"){
+            var gameScene = GameScene()
+            gameScene.checkPoint = self.checkPoint
+            println("entering with checkpoint \(gameScene.checkPoint)")
+            gameScene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+            gameScene.size = skView.bounds.size
+            gameScene.scaleMode = SKSceneScaleMode.AspectFill
+            self.scene!.view!.presentScene(gameScene, transition: trans)
+        }
+
+        else if (node.name == "instructions")
+        {
             var skView = self.view as SKView!
             var scene = InstructionScene()
             scene.fromInstructionsButton = true
@@ -132,7 +167,17 @@ class MenuScene : SKScene {
             scene.size = skView.bounds.size
             scene.scaleMode = SKSceneScaleMode.AspectFill
             self.scene?.view?.presentScene(scene)
-            
+        }
+        
+        else if (node.name == "playUp")
+        {
+            var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
+            var skView = self.view as SKView!
+            var scene = GameSceneReverse()
+            scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+            scene.size = skView.bounds.size
+            scene.scaleMode = SKSceneScaleMode.AspectFill
+            self.scene!.view!.presentScene(scene, transition: trans)
         }
     }
     

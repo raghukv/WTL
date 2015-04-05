@@ -11,14 +11,20 @@ import SpriteKit
 import UIKit
 
 class TryAgainScene : SKScene {
-    var tryAgainLabel : SKLabelNode = SKLabelNode()
-    var menuLabel : SKLabelNode = SKLabelNode()
-    var labelScore : SKLabelNode = SKLabelNode()
+    var tryAgainLabel : SKLabelNode!
+    var menuLabel : SKLabelNode!
+    var labelScore : SKLabelNode!
     var utils : GameUtils = GameUtils()
     var scoreMan : DataManager = DataManager()
     var score : Double = 0.0
     var checkPoint = 0;
-    var yValues : Dictionary<Int, CGFloat> = Dictionary<Int, CGFloat>();
+    var yValues : Dictionary<Int, CGFloat>!
+    
+    convenience init(score: Double, checkPoint: Int){
+        self.init()
+        self.score = score
+        self.checkPoint = checkPoint
+    }
     
     override func didMoveToView(view: SKView) {
         
@@ -46,6 +52,8 @@ class TryAgainScene : SKScene {
         self.addChild(menuLabel)
         scoreMan.addNewScoreAndSave(score, checkPoint: checkPoint)
     }
+    
+    
     
     override func touchesBegan (touches: NSSet, withEvent event: UIEvent)
     {
