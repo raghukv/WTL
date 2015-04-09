@@ -320,7 +320,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Watch those Lines";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "27e4db85-d9a2-4693-8eee-6e550795b643";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -339,7 +339,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "Watch those Lines";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "27e4db85-d9a2-4693-8eee-6e550795b643";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

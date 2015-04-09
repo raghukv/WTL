@@ -67,6 +67,7 @@ class TryAgainScene : SKScene {
         if(nodeName == tryAgain){
             
             var scene = GameScene()
+            scene.checkPoint = self.checkPoint
 //            scene.showInstructions = false;
             var trans = SKTransition.doorsOpenHorizontalWithDuration(0.5)
             var skView = self.view as SKView!
