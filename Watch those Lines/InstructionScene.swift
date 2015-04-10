@@ -130,11 +130,19 @@ class InstructionScene : SKScene {
                     
                     
                     if(self.fromInstructionsButton){
-                        self.playButton = GameUtils.getLabelNodeWithText("play", name: "playButton");
-                        self.playButton.name = "playButton"
-                        self.addChild(self.playButton)
-                        self.playButton.position = CGPointMake(self.frame.midX, self.yValues[4]!)
-                        self.playButton.runAction(fadeIn)
+//                        self.playButton = GameUtils.getLabelNodeWithText("play", name: "playButton");
+//                        self.playButton.name = "playButton"
+//                        self.addChild(self.playButton)
+//                        self.playButton.position = CGPointMake(self.frame.midX, self.yValues[4]!)
+//                        self.playButton.runAction(fadeIn)
+                        var scene = MenuScene()
+                        var trans = SKTransition.doorsCloseVerticalWithDuration(0.5)
+                        var skView = self.view as SKView!
+                        scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+                        scene.size = skView.bounds.size
+                        scene.scaleMode = SKSceneScaleMode.AspectFill
+                        self.scene!.view!.presentScene(scene, transition: trans)
+
                     }
                     else
                     {
@@ -179,6 +187,9 @@ class InstructionScene : SKScene {
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
         //Get touch coordinates in location view
         var touch : UITouch = touches.anyObject() as UITouch
+        
+        
+        
         var currentTouch : CGPoint = touch.locationInNode(self)
         var previousTouch : CGPoint = touch.previousLocationInNode(self)
         var circlePosition = controlCircle.position
