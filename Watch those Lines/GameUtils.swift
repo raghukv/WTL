@@ -245,7 +245,7 @@ class GameUtils {
     
     func createDiamond() -> SKSpriteNode{
         
-        var diamond = SKSpriteNode(imageNamed: "Diamond.png")
+        var diamond = SKSpriteNode(imageNamed: "Coll.png")
         
         var body = SKPhysicsBody(texture: diamond.texture, size: diamond.texture!.size())
         
