@@ -91,6 +91,11 @@ class InstructionScene : SKScene {
         controlCircle.physicsBody?.contactTestBitMask = dropCategory | waterCategory
         controlCircle.physicsBody?.collisionBitMask = dropCategory | waterCategory
         
+        var xRange = SKRange(lowerLimit: self.frame.minX, upperLimit: self.frame.maxX)
+        var yRange = SKRange(lowerLimit: self.frame.minY, upperLimit: self.frame.maxY)
+        var areaConstraint = SKConstraint.positionX(xRange, y: yRange)
+        controlCircle.constraints = [areaConstraint];
+        
         controlCircle.name = "controlObj"
         
     }

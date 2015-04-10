@@ -196,6 +196,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         controlCircle.physicsBody?.contactTestBitMask = dropCategory | waterCategory
         controlCircle.physicsBody?.collisionBitMask = dropCategory | waterCategory
         
+        var xRange = SKRange(lowerLimit: self.frame.minX, upperLimit: self.frame.maxX)
+        var yRange = SKRange(lowerLimit: self.frame.minY, upperLimit: self.frame.maxY)
+        var areaConstraint = SKConstraint.positionX(xRange, y: yRange)
+        controlCircle.constraints = [areaConstraint];
+        
         controlCircle.name = "controlObj"
         
     }
@@ -495,13 +500,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var newPos = CGPointMake(newX, newY);
         var checkPos = CGPointMake(newX - controlCircle.frame.width/2, newY)
         var checkPosTwo = CGPointMake(newX + controlCircle.frame.width/2, newY)
-        
-        if(self.frame.contains(checkPos) && self.frame.contains(checkPosTwo)){
-            //        if(self.frame.contains(newPos)){
-            controlCircle.position = newPos
-        }else{
-            controlCircle.position.y = newPos.y
-        }
+                
+        controlCircle.position = newPos
         
         if(!initialMovement){
             initialMovement = true
