@@ -100,8 +100,6 @@ class DataManager {
             let newHighScore = BestScore(score: newScore, checkPoint: checkPoint);
             self.scores.append(newHighScore);
             self.saveScore();
-        }else{
-            println("not saving as it is not highest")
         }
     }
 }

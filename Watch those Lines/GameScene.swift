@@ -262,7 +262,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func moveWaterUp() -> Void {
         var wait2 = SKAction.waitForDuration(2)
-        var moveWaterLevelUp = SKAction.moveTo(CGPointMake(CGRectGetMidX(self.frame), self.frame.height/2), duration: 20)
+        var moveWaterLevelUp = SKAction.moveTo(CGPointMake(self.frame.midX, self.frame.midY), duration: 20)
         
         var waitAndMoveUp = SKAction.sequence([wait2, moveWaterLevelUp])
         self.water.runAction(waitAndMoveUp, withKey: "moveWaterUp");
@@ -566,7 +566,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.lastSpawnTimeInterval = 0;
             self.totalElapsedTime += 1
             var modScore = Int(floor(self.score))
-            
+
 //            self.scoreLabel.text = CheckPointHelper.getFormattedScore(self.score)
             
             if((water.position.y + (water.frame.height/1.3)) > CGRectGetMidY(self.frame)){
@@ -629,7 +629,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             /*
             Begin movement of water after 14 seconds
             */
-            if(modScore == 14){
+            if((modScore == 14) || (checkPoint >= 1 && totalElapsedTime == 3)){
                 moveWaterUp()
             }
             

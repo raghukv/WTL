@@ -107,18 +107,40 @@ class MenuScene : SKScene {
             instructions.runAction(fadeIn)
         }
         else if(!scoreManager.userPrefs.userTookInstructions){
-            playNew = GameUtils.getLabelNodeWithText("start new", name: "newButton");
+            playNew = GameUtils.getLabelNodeWithText("start afresh", name: "newButton");
             playNew.name = "newButton"
+            playNew.fontSize = 30
             self.addChild(playNew)
             playNew.position = CGPointMake(center.x, yValues[6]!)
             playNew.runAction(fadeIn)
             
-            scoreLabel.alpha = 0.0
-            scoreLabel.position = CGPointMake(center.x, yValues[4]!)
-            scoreLabel.fontColor = GameUtils.getBlueColor()
-            scoreLabel.fontName = "Heiti TC Light"
-            self.addChild(scoreLabel)
-            scoreLabel.runAction(fadeIn)
+            if(self.highScore == 0){
+                scoreLabel.alpha = 0.0
+                scoreLabel.fontSize = 30
+                scoreLabel.position = CGPointMake(center.x, yValues[4]!)
+                scoreLabel.fontColor = GameUtils.getBlueColor()
+                scoreLabel.fontName = "Heiti TC Light"
+                self.addChild(scoreLabel)
+                scoreLabel.runAction(fadeIn)
+            }else if (self.highScore > 0.1){
+                
+                var resumeText = self.checkPoint > 0 ? "resume checkpoint \(self.checkPoint)" :
+                "resume checkpoint"
+                playButton = GameUtils.getLabelNodeWithText(resumeText, name: "playButton");
+                playButton.name = "playButton"
+                self.addChild(playButton)
+                playButton.fontSize = 30
+                playButton.position = CGPointMake(center.x, yValues[4]!)
+                playButton.runAction(fadeIn)
+                
+                scoreLabel.alpha = 0.0
+                scoreLabel.position = CGPointMake(center.x, yValues[2]!)
+                scoreLabel.fontColor = GameUtils.getBlueColor()
+                scoreLabel.fontName = "Heiti TC Light"
+                scoreLabel.fontSize = 30
+                self.addChild(scoreLabel)
+                scoreLabel.runAction(fadeIn)
+            }
             
         }
     }
@@ -147,15 +169,26 @@ class MenuScene : SKScene {
             }
         }
         else if (node.name == "playButton"){
-            var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
             var skView = self.view as SKView!
-            var gameScene = GameScene()
-            gameScene.checkPoint = self.checkPoint
-            println("entering with checkpoint \(gameScene.checkPoint)")
-            gameScene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
-            gameScene.size = skView.bounds.size
-            gameScene.scaleMode = SKSceneScaleMode.AspectFill
-            self.scene!.view!.presentScene(gameScene, transition: trans)
+            var trans = SKTransition.doorsOpenVerticalWithDuration(0.5)
+            
+            if(scoreManager.userPrefs.userTookInstructions){
+                
+                var gameScene = GameScene()
+                gameScene.checkPoint = self.checkPoint
+                println("entering with checkpoint \(gameScene.checkPoint)")
+                gameScene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+                gameScene.size = skView.bounds.size
+                gameScene.scaleMode = SKSceneScaleMode.AspectFill
+                self.scene!.view!.presentScene(gameScene, transition: trans)
+            }else{
+                var scene = InstructionScene()
+                scene.bridgeCheckPoint = self.checkPoint
+                scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
+                scene.size = skView.bounds.size
+                scene.scaleMode = SKSceneScaleMode.AspectFill
+                self.scene!.view!.presentScene(scene, transition: trans)
+            }
         }
 
         else if (node.name == "instructions")

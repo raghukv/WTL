@@ -37,6 +37,8 @@ class InstructionScene : SKScene {
     
     var yValues : Dictionary<Int, CGFloat> = Dictionary<Int, CGFloat>();
     
+    var bridgeCheckPoint = 0
+    
     
     override func didMoveToView(view: SKView) {
         
@@ -148,6 +150,7 @@ class InstructionScene : SKScene {
                     {
                         var skView = self.view as SKView!
                         var scene = GameScene()
+                        scene.checkPoint = self.bridgeCheckPoint
                         scene.backgroundColor = SKColor(red: 245/255, green: 221/255, blue: 190/255, alpha: 1)
                         scene.size = skView.bounds.size
                         scene.scaleMode = SKSceneScaleMode.AspectFill
