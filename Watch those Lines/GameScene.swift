@@ -145,7 +145,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func injectCheckPointDifficultyAndScores() -> Void {
-        (self.dropGenerationInterval, self.dropFallDuration) = CheckPointHelper.getDifficultyForCheckPoint(self.checkPoint)
+        
+        var difficultyPoint = self.checkPoint
+        if(self.checkPoint > 5){
+            difficultyPoint = 5
+        }
+        
+        (self.dropGenerationInterval, self.dropFallDuration) = CheckPointHelper.getDifficultyForCheckPoint(difficultyPoint)
         
         self.score = CheckPointHelper.baseScoreForCheckPoint(self.checkPoint)
     }
